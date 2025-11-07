@@ -1,0 +1,136 @@
+/* === GYMROLL STYLE === */
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+:root {
+  --bg: #0f0f0f;
+  --text: #f5f5f5;
+  --accent: #ff5a00;
+  --accent-hover: #ff7733;
+  --gray: #2b2b2b;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  text-align: center;
+  padding: 60px 20px;
+}
+
+/* Header */
+h1 {
+  font-size: 3rem;
+  letter-spacing: 1px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+p {
+  color: #aaa;
+  font-size: 1rem;
+  margin-bottom: 40px;
+}
+
+/* Input Section */
+select {
+  background-color: var(--gray);
+  color: var(--text);
+  border: none;
+  padding: 12px 18px;
+  border-radius: 8px;
+  margin: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+select:hover {
+  background-color: #3a3a3a;
+}
+
+/* Button */
+
+
+.btn {
+  background-color: var(--accent);
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 28px;
+  margin-top: 20px;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 450ms ease-in-out;
+}
+
+.sparkle {
+  fill: #f7f6f6;
+  transition: all 800ms ease;
+}
+
+.text {
+  font-weight: 600;
+  color: #ffffff;
+  font-size: medium;
+}
+
+.btn:hover {
+  background: linear-gradient(0deg,#A47CF3,#683FEA);
+  box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 0.4),
+  inset 0px -4px 0px 0px rgba(0, 0, 0, 0.2),
+  0px 0px 0px 4px rgba(255, 255, 255, 0.2),
+  0px 0px 180px 0px #9917FF;
+  transform: translateY(-2px);
+}
+
+.btn:hover .text {
+  color: white;
+}
+
+.btn:hover .sparkle {
+  fill: white;
+  transform: scale(1.2);
+} 
+
+/* Workout Result Box */
+#workoutResult {
+  background-color: var(--gray);
+  border-radius: 12px;
+  padding: 25px;
+  margin-top: 50px;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  display: inline-block;
+  width: 80%;
+  max-width: 500px;
+}
+
+strong {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Footer */
+footer {
+  margin-top: 60px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+footer a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
