@@ -1,459 +1,623 @@
-/* === GYMROLL STYLE === */
+/* ============================================================================
+   GYMROLL STYLESHEET
+   ============================================================================
+   This file contains all styling for the GymRoll workout generator application
+   ============================================================================ */
 
+/* Import Google Fonts - Montserrat with multiple weights for typography */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
 
+/* ============================================================================
+   CSS VARIABLES (Custom Properties)
+   ============================================================================
+   Centralized color scheme for easy theming and consistency
+   ============================================================================ */
 :root {
-  --bg: #0f0f0f;
-  --text: #f5f5f5;
-  --accent: #ff5a00;
-  --accent-hover: #ff7733;
-  --gray: #2b2b2b;
+  --bg: #0f0f0f;           /* Dark background color */
+  --text: #f5f5f5;          /* Light text color for contrast */
+  --accent: #ff5a00;        /* Primary accent color (orange) */
+  --accent-hover: #ff7733;  /* Lighter orange for hover states */
+  --gray: #2b2b2b;          /* Gray for cards and secondary elements */
 }
 
+/* ============================================================================
+   GLOBAL RESET & BASE STYLES
+   ============================================================================ */
+
+/* Universal selector - applies to all elements */
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Montserrat', sans-serif;
+  box-sizing: border-box;  /* Include padding and border in element width */
+  margin: 0;                /* Remove default margins */
+  padding: 0;              /* Remove default padding */
+  font-family: 'Montserrat', sans-serif;  /* Set default font */
 }
 
+/* Body element - main page container */
 body {
-  background-color: var(--bg);
-  color: var(--text);
-  text-align: center;
-  padding: 60px 20px;
+  background-color: var(--bg);  /* Use CSS variable for background */
+  color: var(--text);            /* Use CSS variable for text color */
+  text-align: center;            /* Center-align all content */
+  padding: 60px 20px;            /* Add padding for spacing */
 }
 
-/* Header */
+/* ============================================================================
+   TYPOGRAPHY
+   ============================================================================ */
+
+/* Main page heading (h1) */
 h1 {
-  font-size: 3rem;
-  letter-spacing: 1px;
-  font-weight: 700;
-  margin-bottom: 10px;
+  font-size: 3rem;         /* Large font size for prominence */
+  letter-spacing: 1px;      /* Slight letter spacing for readability */
+  font-weight: 700;        /* Bold weight */
+  margin-bottom: 10px;     /* Space below heading */
 }
 
+/* Paragraph/subtitle text */
 p {
-  color: #aaa;
-  font-size: 1rem;
-  margin-bottom: 40px;
+  color: #aaa;             /* Lighter gray for secondary text */
+  font-size: 1rem;         /* Standard font size */
+  margin-bottom: 40px;     /* Space below paragraph */
 }
 
-/* Input Section */
+/* ============================================================================
+   FORM CONTROLS
+   ============================================================================ */
+
+/* Select dropdown menus for workout filters */
 select {
-  background-color: var(--gray);
-  color: var(--text);
-  border: none;
-  padding: 12px 18px;
-  border-radius: 8px;
-  margin: 10px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: 0.2s;
+  background-color: var(--gray);  /* Dark gray background */
+  color: var(--text);             /* Light text color */
+  border: none;                   /* Remove default border */
+  padding: 12px 18px;            /* Internal spacing */
+  border-radius: 8px;            /* Rounded corners */
+  margin: 10px;                   /* Space around select */
+  font-size: 1rem;               /* Standard font size */
+  cursor: pointer;                /* Pointer cursor on hover */
+  transition: 0.2s;              /* Smooth transition for hover */
 }
 
+/* Hover state for select dropdowns */
 select:hover {
-  background-color: #3a3a3a;
+  background-color: #3a3a3a;  /* Lighter gray on hover */
 }
 
-/* Button */
+/* ============================================================================
+   BUTTONS
+   ============================================================================ */
 
-
+/* Main Generate button */
 .btn {
-  background-color: var(--accent);
-  color: white;
-  font-weight: 600;
-  border: none;
-  border-radius: 10px;
-  padding: 14px 28px;
-  margin-top: 20px;
-  font-size: 1rem;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  transition: all 450ms ease-in-out;
+  background-color: var(--accent);  /* Orange accent color */
+  color: white;                      /* White text */
+  font-weight: 600;                 /* Semi-bold text */
+  border: none;                     /* No border */
+  border-radius: 10px;              /* Rounded corners */
+  padding: 14px 28px;               /* Internal spacing */
+  margin-top: 20px;                 /* Space above button */
+  font-size: 1rem;                  /* Standard font size */
+  letter-spacing: 0.5px;            /* Slight letter spacing */
+  cursor: pointer;                   /* Pointer cursor */
+  transition: all 450ms ease-in-out; /* Smooth transitions */
 }
 
+/* Sparkle/star icon inside button */
 .sparkle {
-  fill: #f7f6f6;
-  transition: all 800ms ease;
+  fill: #f7f6f6;           /* Light gray fill color */
+  transition: all 800ms ease; /* Smooth animation */
 }
 
+/* Button text label */
 .text {
-  font-weight: 600;
-  color: #ffffff;
-  font-size: medium;
+  font-weight: 600;         /* Semi-bold */
+  color: #ffffff;         /* White color */
+  font-size: medium;      /* Medium font size */
 }
 
+/* Hover effect for Generate button - animated gradient */
 .btn:hover {
-  background: linear-gradient(0deg,#A47CF3,#683FEA);
+  background: linear-gradient(0deg,#A47CF3,#683FEA);  /* Purple gradient */
   box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 0.4),
   inset 0px -4px 0px 0px rgba(0, 0, 0, 0.2),
   0px 0px 0px 4px rgba(255, 255, 255, 0.2),
-  0px 0px 180px 0px #9917FF;
-  transform: translateY(-2px);
+  0px 0px 180px 0px #9917FF;  /* Glowing shadow effect */
+  transform: translateY(-2px);  /* Slight lift on hover */
 }
 
+/* Text color on button hover */
 .btn:hover .text {
   color: white;
 }
 
+/* Sparkle icon animation on button hover */
 .btn:hover .sparkle {
-  fill: white;
-  transform: scale(1.2);
+  fill: white;            /* White fill */
+  transform: scale(1.2);  /* Scale up 20% */
 } 
-/* From Uiverse.io by alexruix */ 
-/* The switch - the box around the slider */
-.switch {
-  font-size: 17px;
-  position: relative;
+
+/* ============================================================================
+   MATERIALS CARD
+   ============================================================================
+   Interactive card where users select available equipment
+   ============================================================================ */
+.materials-container {
   display: inline-block;
-  width: 3.5em;
-  height: 2em;
-  margin: 10px;
-  vertical-align: middle;
+  position: relative;
+  margin: 10px 0 20px;
 }
 
-/* Hide default HTML checkbox */
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-/* The slider */
-.slider {
-  position: absolute;
+.materials-btn {
+  background: transparent;
+  border: 2px solid var(--accent);
+  color: var(--text);
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 0.95rem;
   cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #B0B0B0;
-  border: 1px solid #B0B0B0;
-  transition: .4s;
-  border-radius: 32px;
+  transition: all 0.2s ease;
+}
+
+.materials-btn:hover,
+.materials-btn:focus {
+  background-color: rgba(255, 90, 0, 0.08);
   outline: none;
 }
 
-.slider:before {
+.materials-card {
   position: absolute;
-  content: "";
-  height: 2rem;
-  width: 2rem;
-  border-radius: 50%;
-  outline: 2px solid #B0B0B0;
-  left: -1px;
-  bottom: -1px;
-  background-color: #fff;
-  transition: transform .25s ease-in-out 0s;
-}
-
-.slider-icon {
+  top: calc(100% + 12px);
+  right: 0;
+  width: 320px;
+  max-width: 90vw;
+  background-color: #1c1c1c;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+  padding: 20px;
+  z-index: 50;
   opacity: 0;
-  height: 12px;
-  width: 12px;
-  stroke-width: 8;
-  position: absolute;
-  z-index: 999;
-  stroke: #da0c0c;
-  right: 60%;
-  top: 30%;
-  transition: right ease-in-out .3s, opacity ease-in-out .15s;
+  pointer-events: none;
+  transform: translateY(-10px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-input:checked + .slider {
-  background-color: #ff7733;
-}
-
-input:checked + .slider .slider-icon {
+.materials-card.open {
   opacity: 1;
-  right: 20%;
+  pointer-events: auto;
+  transform: translateY(0);
 }
 
-input:checked + .slider:before {
-  transform: translateX(1.5em);
-  outline-color: #181818;
+.materials-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
-/* Workout Result Box */
-#workoutResult {
-  background-color: var(--gray);
-  border-radius: 12px;
-  padding: 25px;
-  margin-top: 50px;
-  font-size: 1.2rem;
-  line-height: 1.6;
-  display: inline-block;
-  width: 80%;
-  max-width: 500px;
-}
-
-strong {
+.materials-card-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
   color: var(--accent);
-  font-weight: 700;
 }
 
-/* Footer */
-footer {
-  margin-top: 60px;
+.materials-close {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 1.6rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  line-height: 1;
+}
+
+.materials-helper {
+  font-size: 0.85rem;
+  color: #aaa;
+  margin: 0 0 12px 0;
+  text-align: left;
+}
+
+.materials-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.material-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 8px 10px;
   font-size: 0.9rem;
-  color: #666;
+  cursor: pointer;
+}
+
+.material-option input {
+  accent-color: var(--accent);
+}
+
+.materials-apply-btn {
+  width: 100%;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 10px;
+  background-color: var(--accent);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.materials-apply-btn:hover {
+  background-color: var(--accent-hover);
+}
+
+/* ============================================================================
+   WORKOUT RESULT DISPLAY
+   ============================================================================ */
+
+/* Container for generated workout results */
+#workoutResult {
+  background-color: var(--gray);  /* Dark gray background */
+  border-radius: 12px;            /* Rounded corners */
+  padding: 25px;                  /* Internal spacing */
+  margin-top: 50px;               /* Space above container */
+  font-size: 1.2rem;               /* Larger font for readability */
+  line-height: 1.6;                /* Comfortable line spacing */
+  display: inline-block;          /* Shrink to content width */
+  width: 80%;                     /* 80% of parent width */
+  max-width: 500px;               /* Maximum width constraint */
+}
+
+/* Strong/bold text for exercise names */
+strong {
+  color: var(--accent);  /* Orange accent color */
+  font-weight: 700;     /* Bold weight */
+}
+
+/* ============================================================================
+   FOOTER (if used)
+   ============================================================================ */
+
+footer {
+  margin-top: 60px;      /* Space above footer */
+  font-size: 0.9rem;     /* Smaller font */
+  color: #666;          /* Gray text */
 }
 
 footer a {
-  color: var(--accent);
-  text-decoration: none;
+  color: var(--accent);  /* Orange links */
+  text-decoration: none; /* No underline */
 }
 
 footer a:hover {
-  text-decoration: underline;
+  text-decoration: underline; /* Underline on hover */
 }
-/* Mobile Responsive Styles */
+
+/* ============================================================================
+   MOBILE RESPONSIVE STYLES
+   ============================================================================
+   Media queries for tablets and smaller screens (max-width: 768px)
+   ============================================================================ */
 @media screen and (max-width: 768px) {
+  /* Reduce body padding on mobile */
   body {
     padding: 30px 15px;
   }
 
+  /* Smaller heading on mobile */
   h1 {
     font-size: 2rem;
     margin-bottom: 8px;
   }
 
+  /* Smaller paragraph text */
   p {
     font-size: 0.9rem;
     margin-bottom: 30px;
   }
 
-  /* Stack form controls vertically on mobile */
+  /* Stack form labels vertically on mobile */
   div > label {
-    display: block;
-    margin-bottom: 8px;
-    margin-top: 15px;
-    font-size: 0.95rem;
+    display: block;        /* Block display for stacking */
+    margin-bottom: 8px;    /* Space below label */
+    margin-top: 15px;      /* Space above label */
+    font-size: 0.95rem;    /* Slightly smaller font */
   }
 
+  /* Remove top margin from first label */
   div > label:first-child {
     margin-top: 0;
   }
 
+  /* Full-width select dropdowns on mobile */
   select {
+    display: block;         /* Block display */
+    width: 100%;          /* Full width */
+    max-width: 100%;      /* No max width constraint */
+    margin: 0 0 15px 0;   /* Margin only below */
+    padding: 14px 18px;   /* Slightly more padding for touch */
+    font-size: 1rem;      /* Standard font size */
+  }
+
+  /* Expand materials selector on mobile */
+  .materials-container {
     display: block;
+  }
+
+  .materials-card {
+    position: relative;
+    top: 12px;
+    right: auto;
     width: 100%;
     max-width: 100%;
-    margin: 0 0 15px 0;
-    padding: 14px 18px;
-    font-size: 1rem;
   }
 
-  .switch {
-    display: block;
-    margin: 0 auto 15px auto;
-  }
-
+  /* Full-width button on mobile */
   .btn {
-    width: 100%;
-    max-width: 100%;
-    padding: 16px 28px;
-    font-size: 1rem;
-    margin-top: 20px;
+    width: 100%;          /* Full width */
+    max-width: 100%;     /* No max width */
+    padding: 16px 28px;  /* More padding for touch */
+    font-size: 1rem;     /* Standard font */
+    margin-top: 20px;    /* Space above */
   }
 
+  /* Full-width workout result on mobile */
   #workoutResult {
-    width: 100%;
-    max-width: 100%;
-    padding: 20px;
-    margin-top: 30px;
-    font-size: 1rem;
+    width: 100%;         /* Full width */
+    max-width: 100%;     /* No max width */
+    padding: 20px;       /* Slightly less padding */
+    margin-top: 30px;    /* Less top margin */
+    font-size: 1rem;     /* Standard font size */
   }
 }
 
-/* Smaller mobile devices */
+/* ============================================================================
+   SMALL MOBILE DEVICES
+   ============================================================================
+   Additional styles for very small screens (max-width: 480px)
+   ============================================================================ */
 @media screen and (max-width: 480px) {
+  /* Even less padding on small screens */
   body {
     padding: 20px 10px;
   }
 
+  /* Smaller heading */
   h1 {
     font-size: 1.75rem;
   }
 
+  /* Smaller paragraph */
   p {
     font-size: 0.85rem;
     margin-bottom: 25px;
   }
 
+  /* Less padding on selects */
   select {
     padding: 12px 16px;
     font-size: 0.95rem;
   }
 
+  /* Less padding on button */
   .btn {
     padding: 14px 24px;
     font-size: 0.95rem;
   }
 
+  .materials-card {
+    width: 100%;
+  }
+
+  /* Less padding on workout result */
   #workoutResult {
     padding: 15px;
     font-size: 0.95rem;
   }
 }
 
-/* Saved Link */
+/* ============================================================================
+   SAVED WORKOUTS PAGE STYLES
+   ============================================================================ */
+
+/* Navigation link to saved workouts page (top right) */
 .saved-link {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  color: var(--accent);
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1rem;
-  padding: 8px 16px;
-  border-radius: 8px;
-  transition: all 0.2s;
-  z-index: 100;
+  position: absolute;      /* Absolute positioning */
+  top: 20px;              /* 20px from top */
+  right: 20px;            /* 20px from right */
+  color: var(--accent);    /* Orange color */
+  text-decoration: none;   /* No underline */
+  font-weight: 600;       /* Semi-bold */
+  font-size: 1rem;        /* Standard font size */
+  padding: 8px 16px;      /* Internal spacing */
+  border-radius: 8px;     /* Rounded corners */
+  transition: all 0.2s;    /* Smooth transitions */
+  z-index: 100;           /* Above other content */
 }
 
+/* Hover effect for saved link */
 .saved-link:hover {
-  background-color: var(--gray);
-  color: var(--accent-hover);
+  background-color: var(--gray);  /* Gray background */
+  color: var(--accent-hover);     /* Lighter orange */
 }
 
-/* Save Button */
+/* Save workout button (flag icon) */
 .save-btn {
-  background: transparent;
-  border: 2px solid var(--accent);
-  color: var(--accent);
-  padding: 8px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: transparent;        /* Transparent background */
+  border: 2px solid var(--accent); /* Orange border */
+  color: var(--accent);            /* Orange color */
+  padding: 8px 12px;              /* Internal spacing */
+  border-radius: 8px;              /* Rounded corners */
+  cursor: pointer;                 /* Pointer cursor */
+  transition: all 0.2s;            /* Smooth transitions */
+  display: flex;                    /* Flexbox for centering */
+  align-items: center;             /* Vertical centering */
+  justify-content: center;         /* Horizontal centering */
 }
 
+/* Hover effect for save button (when not disabled) */
 .save-btn:hover:not(:disabled) {
-  background-color: var(--accent);
-  color: white;
+  background-color: var(--accent); /* Orange background */
+  color: white;                    /* White icon */
 }
 
+/* Disabled state for save button */
 .save-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+  opacity: 0.6;        /* Reduced opacity */
+  cursor: not-allowed; /* Not-allowed cursor */
 }
 
-/* Saved Workouts Page */
+/* ============================================================================
+   SAVED WORKOUTS LIST PAGE
+   ============================================================================ */
+
+/* Container for saved workouts list */
 #savedWorkoutsList {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+  max-width: 800px;    /* Maximum width for readability */
+  margin: 0 auto;      /* Center horizontally */
+  padding: 20px;       /* Internal spacing */
 }
 
+/* Individual workout card */
 .saved-workout-card {
-  background-color: var(--gray);
-  border-radius: 12px;
-  padding: 25px;
-  margin-bottom: 25px;
-  text-align: left;
+  background-color: var(--gray);  /* Dark gray background */
+  border-radius: 12px;            /* Rounded corners */
+  padding: 25px;                  /* Internal spacing */
+  margin-bottom: 25px;            /* Space between cards */
+  text-align: left;               /* Left-align text */
 }
 
+/* Header section of workout card (title and delete button) */
 .workout-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
+  display: flex;                   /* Flexbox layout */
+  justify-content: space-between;  /* Space between title and button */
+  align-items: center;             /* Vertical centering */
+  margin-bottom: 15px;             /* Space below header */
 }
 
+/* Workout title in card */
 .workout-header h2 {
-  margin: 0;
-  font-size: 1.5rem;
-  color: var(--accent);
+  margin: 0;                       /* No margin */
+  font-size: 1.5rem;               /* Large font */
+  color: var(--accent);            /* Orange color */
 }
 
+/* Delete button in workout card */
 .delete-btn {
-  background: transparent;
-  border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
-  padding: 5px 10px;
-  border-radius: 6px;
-  transition: all 0.2s;
+  background: transparent;         /* Transparent background */
+  border: none;                    /* No border */
+  font-size: 1.2rem;              /* Large emoji size */
+  cursor: pointer;                 /* Pointer cursor */
+  padding: 5px 10px;              /* Internal spacing */
+  border-radius: 6px;             /* Rounded corners */
+  transition: all 0.2s;            /* Smooth transitions */
 }
 
+/* Hover effect for delete button */
 .delete-btn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  transform: scale(1.1);
+  background-color: rgba(255, 255, 255, 0.1); /* Light background */
+  transform: scale(1.1);           /* Slight scale up */
 }
 
+/* Metadata section (settings and date) */
 .workout-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  font-size: 0.95rem;
-  color: #aaa;
-  flex-wrap: wrap;
-  gap: 10px;
+  display: flex;                   /* Flexbox layout */
+  justify-content: space-between;   /* Space between items */
+  align-items: center;             /* Vertical centering */
+  margin-bottom: 20px;               /* Space below */
+  padding-bottom: 15px;            /* Padding below */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle divider */
+  font-size: 0.95rem;              /* Slightly smaller font */
+  color: #aaa;                     /* Gray text */
+  flex-wrap: wrap;                 /* Wrap on small screens */
+  gap: 10px;                       /* Space between items */
 }
 
+/* Exercise list in workout card */
 .workout-exercises {
-  font-size: 1.1rem;
-  line-height: 1.6;
+  font-size: 1.1rem;    /* Slightly larger font */
+  line-height: 1.6;     /* Comfortable line spacing */
 }
 
-/* Modal Overlay */
+/* ============================================================================
+   MODAL DIALOG STYLES
+   ============================================================================ */
+
+/* Modal overlay (dark background) */
 .modal-overlay {
-  animation: fadeIn 0.2s ease-in;
+  animation: fadeIn 0.2s ease-in; /* Fade-in animation */
 }
 
+/* Fade-in animation keyframes */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { opacity: 0; }  /* Start invisible */
+  to { opacity: 1; }    /* End fully visible */
 }
 
-/* Clear All Button */
+/* ============================================================================
+   CLEAR ALL BUTTON
+   ============================================================================ */
+
+/* Hover effect for clear all button */
 .clear-all-btn:hover {
-  background: #cc0000 !important;
+  background: #cc0000 !important; /* Darker red on hover */
 }
 
-/* Error/Success Messages */
+/* ============================================================================
+   NOTIFICATION MESSAGES
+   ============================================================================ */
+
+/* Error and success message animations */
 .error-message, .success-message {
-  animation: slideDown 0.3s ease-out;
+  animation: slideDown 0.3s ease-out; /* Slide-down animation */
 }
 
+/* Slide-down animation keyframes */
 @keyframes slideDown {
   from {
-    transform: translateX(-50%) translateY(-20px);
-    opacity: 0;
+    transform: translateX(-50%) translateY(-20px); /* Start above and centered */
+    opacity: 0;                                    /* Start invisible */
   }
   to {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
+    transform: translateX(-50%) translateY(0);    /* End in position */
+    opacity: 1;                                    /* End visible */
   }
 }
 
-/* Mobile adjustments for saved page */
+/* ============================================================================
+   MOBILE ADJUSTMENTS FOR SAVED PAGE
+   ============================================================================
+   Responsive styles for saved workouts page on mobile
+   ============================================================================ */
 @media screen and (max-width: 768px) {
+  /* Make saved link relative on mobile (not absolute) */
   .saved-link {
-    position: relative;
-    top: 0;
-    right: 0;
-    display: inline-block;
-    margin-bottom: 20px;
+    position: relative;    /* Relative positioning */
+    top: 0;              /* No top offset */
+    right: 0;            /* No right offset */
+    display: inline-block; /* Inline block */
+    margin-bottom: 20px;  /* Space below */
   }
   
+  /* Stack workout header vertically on mobile */
   .workout-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+    flex-direction: column;  /* Vertical stacking */
+    align-items: flex-start; /* Left alignment */
+    gap: 10px;               /* Space between items */
   }
   
+  /* Stack metadata vertically on mobile */
   .workout-meta {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: column;   /* Vertical stacking */
+    align-items: flex-start;  /* Left alignment */
   }
   
+  /* Less padding on cards for mobile */
   .saved-workout-card {
     padding: 20px;
   }

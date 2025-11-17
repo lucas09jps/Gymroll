@@ -1,28 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <!-- Viewport meta tag for responsive design on mobile devices -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Character encoding for proper text display -->
   <meta charset="UTF-8" />
+  <!-- Page title shown in browser tab -->
   <title>Saved Workouts – GymRoll</title>
+  <!-- Link to external stylesheet (shared with main page) -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Navigation link back to home page (top right corner) -->
   <a href="index.html" class="saved-link">🏠 Home</a>
   
+  <!-- Page heading -->
   <h1>📋 Saved Workouts</h1>
   
+  <!-- Controls section: Search and Clear All button -->
   <div id="controls" style="max-width: 800px; margin: 20px auto; padding: 0 20px;">
+    <!-- Search input for filtering workouts -->
     <input type="text" id="searchInput" placeholder="Search workouts..." style="width: 100%; padding: 12px; background: var(--gray); color: var(--text); border: 2px solid var(--accent); border-radius: 8px; font-size: 1rem; box-sizing: border-box; margin-bottom: 15px;">
+    
+    <!-- Info and action bar -->
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <!-- Display count of saved workouts -->
       <span id="workoutCount" style="color: #aaa;"></span>
+      <!-- Button to delete all saved workouts -->
       <button id="clearAllBtn" class="clear-all-btn" style="padding: 8px 16px; background: #ff4444; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Clear All</button>
     </div>
   </div>
   
+  <!-- Container where saved workouts will be displayed -->
   <div id="savedWorkoutsList"></div>
   
   <script>
-    // Check if localStorage is available
+    // ============================================================================
+    // SAVED WORKOUTS PAGE JAVASCRIPT
+    // ============================================================================
+    // This script handles displaying, searching, and managing saved workouts
+    // ============================================================================
+
+    /**
+     * Checks if localStorage is available in the browser
+     * @returns {Boolean} True if available, false otherwise
+     */
     function isLocalStorageAvailable() {
       try {
         const test = '__localStorage_test__';
@@ -34,10 +56,14 @@
       }
     }
     
-    // Get saved workouts with error handling
+    /**
+     * Retrieves all saved workouts from localStorage with error handling
+     * @returns {Array} Array of saved workout objects
+     */
     function getSavedWorkouts() {
       if (!isLocalStorageAvailable()) return [];
       try {
+        // Parse JSON from localStorage, default to empty array
         return JSON.parse(localStorage.getItem('gymroll_saved_workouts') || '[]');
       } catch (e) {
         console.error('Error reading saved workouts:', e);
@@ -45,41 +71,59 @@
       }
     }
     
-    // Sanitize HTML
+    /**
+     * Sanitizes HTML strings to prevent XSS attacks
+     * Converts special characters to HTML entities
+     * @param {String} str - String to sanitize
+     * @returns {String} Sanitized HTML string
+     */
     function sanitizeHTML(str) {
       const div = document.createElement('div');
-      div.textContent = str;
-      return div.innerHTML;
+      div.textContent = str;  // textContent automatically escapes HTML
+      return div.innerHTML;   // Return escaped HTML
     }
     
-    let allWorkouts = [];
-    let filteredWorkouts = [];
+    // Global variables to store workout data
+    let allWorkouts = [];        // All saved workouts
+    let filteredWorkouts = [];    // Workouts after search filtering
     
-    // Load saved workouts
+    /**
+     * Loads and displays saved workouts, optionally filtered by search term
+     * @param {String} searchTerm - Optional search term to filter workouts
+     */
     function loadSavedWorkouts(searchTerm = '') {
+      // Get all saved workouts from localStorage
       allWorkouts = getSavedWorkouts();
       
-      // Filter by search term
+      // Filter workouts by search term if provided
       if (searchTerm.trim()) {
         const term = searchTerm.toLowerCase();
         filteredWorkouts = allWorkouts.filter(workout => 
+          // Search in workout name
           workout.name.toLowerCase().includes(term) ||
+          // Search in muscle group
           workout.settings.muscle.toLowerCase().includes(term) ||
+          // Search in intensity
           workout.settings.intensity.toLowerCase().includes(term) ||
+          // Search in exercise names
           workout.exercises.some(ex => ex.title.toLowerCase().includes(term))
         );
       } else {
+        // No search term, show all workouts
         filteredWorkouts = [...allWorkouts];
       }
       
-      // Sort by date (newest first)
+      // Sort workouts by date (newest first)
       filteredWorkouts.sort((a, b) => new Date(b.date) - new Date(a.date));
       
+      // Get DOM elements
       const container = document.getElementById('savedWorkoutsList');
       const countEl = document.getElementById('workoutCount');
       
+      // Update workout count display
       countEl.textContent = `${filteredWorkouts.length} workout${filteredWorkouts.length !== 1 ? 's' : ''} saved`;
       
+      // If no workouts found, show message
       if (filteredWorkouts.length === 0) {
         container.innerHTML = '<p style="color: #aaa; margin-top: 40px;">' + 
           (searchTerm ? 'No workouts match your search.' : 'No saved workouts yet. Generate a workout and save it to see it here!') + 
@@ -87,25 +131,34 @@
         return;
       }
       
+      // Generate HTML for each workout card
       container.innerHTML = filteredWorkouts.map(workout => {
+        // Format the save date nicely
         const date = new Date(workout.date).toLocaleDateString('en-US', { 
           year: 'numeric', 
           month: 'short', 
           day: 'numeric' 
         });
+        
+        // Generate HTML for each exercise in the workout
         const exercisesHtml = workout.exercises.map(ex => {
+          // Add materials info if available
           const mats = ex.materials ? `, requires materials: ${sanitizeHTML(ex.materials)}` : '';
           return `<div style="margin-bottom:12px"><strong>${sanitizeHTML(ex.title)}</strong> <span style="color:#999;font-size:0.9rem">(${sanitizeHTML(ex.intensity)} Intensity${mats})</span></div>`;
         }).join('');
         
+        // Return HTML for workout card
         return `
           <div class="saved-workout-card" data-workout-id="${workout.id}">
             <div class="workout-header">
               <h2>${sanitizeHTML(workout.name)}</h2>
+              <!-- Delete button with workout ID stored in data attribute -->
               <button class="delete-btn" data-delete-id="${workout.id}" title="Delete workout">🗑️</button>
             </div>
             <div class="workout-meta">
+              <!-- Display workout settings: length, intensity, muscle group, materials -->
               <span>${sanitizeHTML(workout.settings.length)} • ${sanitizeHTML(workout.settings.intensity)} • ${sanitizeHTML(workout.settings.muscle)} • Materials: ${sanitizeHTML(workout.settings.materials)}</span>
+              <!-- Display save date -->
               <span style="color: #666; font-size: 0.9rem;">Saved on ${date}</span>
             </div>
             <div class="workout-exercises">
@@ -113,49 +166,74 @@
             </div>
           </div>
         `;
-      }).join('');
+      }).join('');  // Join all cards into single HTML string
     }
     
+    /**
+     * Deletes a single workout by ID
+     * @param {String} id - Unique ID of workout to delete
+     */
     function deleteWorkout(id) {
+      // Confirm deletion with user
       if (!confirm('Are you sure you want to delete this workout?')) return;
       
+      // Check localStorage availability
       if (!isLocalStorageAvailable()) {
         alert('Local storage is not available.');
         return;
       }
       
       try {
+        // Get all saved workouts
         const savedWorkouts = getSavedWorkouts();
+        // Filter out the workout with matching ID
         const filtered = savedWorkouts.filter(w => w.id !== id);
+        // Save updated array back to localStorage
         localStorage.setItem('gymroll_saved_workouts', JSON.stringify(filtered));
+        // Reload the list with current search term
         loadSavedWorkouts(document.getElementById('searchInput').value);
       } catch (e) {
         alert('Failed to delete workout: ' + e.message);
       }
     }
     
+    /**
+     * Deletes all saved workouts
+     * Shows confirmation dialog before proceeding
+     */
     function clearAllWorkouts() {
+      // Confirm with user (destructive action)
       if (!confirm('Are you sure you want to delete ALL saved workouts? This cannot be undone.')) return;
       
+      // Check localStorage availability
       if (!isLocalStorageAvailable()) {
         alert('Local storage is not available.');
         return;
       }
       
       try {
+        // Remove all workouts from localStorage
         localStorage.removeItem('gymroll_saved_workouts');
+        // Reload the list (will be empty now)
         loadSavedWorkouts();
       } catch (e) {
         alert('Failed to clear workouts: ' + e.message);
       }
     }
     
-    // Event delegation for delete buttons (set up once)
+    // ============================================================================
+    // EVENT LISTENERS SETUP
+    // ============================================================================
+    
+    // Event delegation for delete buttons
+    // This approach works even when workout cards are dynamically created
     const container = document.getElementById('savedWorkoutsList');
     if (container) {
       container.addEventListener('click', (e) => {
+        // Check if clicked element is a delete button (or inside one)
         const deleteBtn = e.target.closest('.delete-btn');
         if (deleteBtn) {
+          // Get workout ID from data attribute
           const workoutId = deleteBtn.getAttribute('data-delete-id');
           if (workoutId) {
             deleteWorkout(workoutId);
@@ -164,26 +242,31 @@
       });
     }
     
-    // Search functionality
+    // Search input event listener
+    // Filters workouts as user types
     const searchInput = document.getElementById('searchInput');
     if (searchInput) {
       searchInput.addEventListener('input', (e) => {
+        // Reload workouts with search filter
         loadSavedWorkouts(e.target.value);
       });
     }
     
-    // Clear all button
+    // Clear all button event listener
     const clearAllBtn = document.getElementById('clearAllBtn');
     if (clearAllBtn) {
       clearAllBtn.addEventListener('click', (e) => {
-        e.preventDefault();
+        e.preventDefault();  // Prevent any default button behavior
         clearAllWorkouts();
       });
     }
     
-    // Load on page load
+    // ============================================================================
+    // INITIALIZATION
+    // ============================================================================
+    
+    // Load workouts when page loads
     loadSavedWorkouts();
   </script>
 </body>
 </html>
-
