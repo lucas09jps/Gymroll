@@ -7,8 +7,6 @@
 // Attach click event listener to the Generate button
 // When clicked, it will call the getWorkout() function
 document.getElementById("generateBtn").addEventListener("click", getWorkout);
-
-// Global variables to store current workout data and event listener reference
 let currentWorkoutData = null;  // Stores the currently generated workout data
 let saveButtonListener = null;  // Reference to save button event listener (for cleanup)
 
@@ -86,6 +84,25 @@ const MATERIAL_LABELS = {
 
 let selectedMaterials = new Set(['bodyweight']);
 
+// Muscle selector state
+const muscleSelection = {
+  mode: 'macro', // 'macro' or 'specific'
+  macro: 'Upper',
+  specifics: new Set()
+};
+
+function getSelectedMuscleSummary() {
+  if (muscleSelection.mode === 'macro') return muscleSelection.macro;
+  if (!muscleSelection.specifics || muscleSelection.specifics.size === 0) return 'All specific';
+  return Array.from(muscleSelection.specifics).join(', ');
+}
+
+function getSelectedMuscle() {
+  // Returns either a macro string (Upper/Lower/Core/Full) or a Set of specific bodyparts
+  if (muscleSelection.mode === 'macro') return muscleSelection.macro;
+  return new Set(muscleSelection.specifics);
+}
+
 // Keyword lists used for intensity inference based on equipment type
 const EASY_EQUIPMENT_KEYWORDS = ['body weight', 'bodyweight', 'no equipment', 'none', 'yoga', 'pilates', 'stretch', 'mobility', 'floor', 'mat'];
 const HARD_EQUIPMENT_KEYWORDS = ['barbell', 'smith', 'lever', 'trap bar', 'weighted', 'sled', 'machine', 'plate', 'cable', 'rack'];
@@ -157,7 +174,8 @@ function initializeMaterialsSelector() {
   const closeBtn = document.getElementById('materialsClose');
   const applyBtn = document.getElementById('materialsApply');
   const summaryEl = document.getElementById('materialsSummary');
-  const inputs = Array.from(document.querySelectorAll('.material-option input'));
+  // Limit inputs to those inside the materials card so muscle controls don't get mixed in
+  const inputs = Array.from(document.querySelectorAll('#materialsCard .material-option input'));
 
   if (!toggleBtn || !card || !summaryEl || inputs.length === 0) return;
 
@@ -179,9 +197,9 @@ function initializeMaterialsSelector() {
     }
   });
 
-  [closeBtn, applyBtn].forEach(btn => {
-    if (btn) btn.addEventListener('click', closeCard);
-  });
+  // Close button closes; apply button should update state then close
+  if (closeBtn) closeBtn.addEventListener('click', closeCard);
+  if (applyBtn) applyBtn.addEventListener('click', () => { updateSelectedMaterialsState(); closeCard(); });
 
   document.addEventListener('click', event => {
     if (!card.contains(event.target) && !toggleBtn.contains(event.target) && card.classList.contains('open')) {
@@ -196,6 +214,13 @@ function initializeMaterialsSelector() {
       selectedMaterials.add('bodyweight');
     }
     summaryEl.textContent = getSelectedMaterialsSummary();
+    // Highlight the materials summary pill when user has selected any non-default option
+    const wrap = document.getElementById('materialsSummaryWrap');
+    if (wrap) {
+      // If only bodyweight is selected, consider it unselected appearance
+      const onlyBodyweight = selectedMaterials.size === 1 && selectedMaterials.has('bodyweight');
+      if (!onlyBodyweight) wrap.classList.add('selected'); else wrap.classList.remove('selected');
+    }
   };
 
   inputs.forEach(input => {
@@ -207,6 +232,100 @@ function initializeMaterialsSelector() {
 }
 
 initializeMaterialsSelector();
+
+function initializeMuscleSelector() {
+  const toggleBtn = document.getElementById('muscleToggle');
+  const card = document.getElementById('muscleCard');
+  const closeBtn = document.getElementById('muscleClose');
+  const applyBtn = document.getElementById('muscleApply');
+  const summaryEl = document.getElementById('muscleSummary');
+  const modeMacroBtn = document.getElementById('muscleModeMacro');
+  const modeSpecificBtn = document.getElementById('muscleModeSpecific');
+  const macroContainer = document.getElementById('muscleMacroOptions');
+  const specificContainer = document.getElementById('muscleSpecificOptions');
+
+  if (!toggleBtn || !card || !summaryEl) return;
+
+  const openCard = () => { card.classList.add('open'); card.setAttribute('aria-hidden','false'); };
+  const closeCard = () => { card.classList.remove('open'); card.setAttribute('aria-hidden','true'); };
+
+  // Gather control inputs (radios and specific checkboxes) safely
+  const radios = Array.from(document.querySelectorAll('input[name="muscleMacro"]'));
+  const specInputs = Array.from(document.querySelectorAll('#muscleSpecificOptions input[type="checkbox"]'));
+
+  // Initialize UI visibility based on current mode
+  if (muscleSelection.mode === 'macro') {
+    if (macroContainer) macroContainer.style.display = '';
+    if (specificContainer) specificContainer.style.display = 'none';
+  } else {
+    if (macroContainer) macroContainer.style.display = 'none';
+    if (specificContainer) specificContainer.style.display = '';
+  }
+
+  // Reflect current selection state in the controls
+  radios.forEach(r => { r.checked = (r.value === muscleSelection.macro); });
+  specInputs.forEach(cb => { cb.checked = muscleSelection.specifics.has(cb.value); });
+
+  toggleBtn.addEventListener('click', () => { card.classList.contains('open') ? closeCard() : openCard(); });
+  if (closeBtn) closeBtn.addEventListener('click', closeCard);
+
+  if (applyBtn) applyBtn.addEventListener('click', () => {
+    summaryEl.textContent = getSelectedMuscleSummary();
+    // Toggle visual selected state on the muscle summary pill
+    const mwrap = document.getElementById('muscleSummaryWrap');
+    if (mwrap) {
+      const isSpecificEmpty = (muscleSelection.mode === 'specific' && (!muscleSelection.specifics || muscleSelection.specifics.size === 0));
+      const isMacroFull = (muscleSelection.mode === 'macro' && (muscleSelection.macro === 'Full' || !muscleSelection.macro));
+      if (!isSpecificEmpty && !isMacroFull) mwrap.classList.add('selected'); else mwrap.classList.remove('selected');
+    }
+    closeCard();
+  });
+
+  document.addEventListener('click', event => {
+    if (!card.contains(event.target) && !toggleBtn.contains(event.target) && card.classList.contains('open')) closeCard();
+  });
+
+  // Mode buttons: ensure switching enforces single macro OR multiple specifics
+  if (modeMacroBtn) modeMacroBtn.addEventListener('click', () => {
+    muscleSelection.mode = 'macro';
+    if (macroContainer) macroContainer.style.display = '';
+    if (specificContainer) specificContainer.style.display = 'none';
+    // Clear specific selections
+    specInputs.forEach(cb => { cb.checked = false; });
+    muscleSelection.specifics.clear();
+    // Ensure a radio is selected (keep existing macro or default)
+    radios.forEach(r => r.checked = (r.value === muscleSelection.macro));
+    modeMacroBtn.style.background = '';
+    if (modeSpecificBtn) modeSpecificBtn.style.background = 'transparent';
+  });
+
+  if (modeSpecificBtn) modeSpecificBtn.addEventListener('click', () => {
+    muscleSelection.mode = 'specific';
+    if (macroContainer) macroContainer.style.display = 'none';
+    if (specificContainer) specificContainer.style.display = '';
+    // Start with no specifics selected (user can pick multiple)
+    muscleSelection.specifics.clear();
+    specInputs.forEach(cb => { cb.checked = false; });
+    modeSpecificBtn.style.background = '';
+    if (modeMacroBtn) modeMacroBtn.style.background = 'transparent';
+  });
+
+  // Macro radio change -> set single macro
+  radios.forEach(r => r.addEventListener('change', (e) => { if (e.target.checked) muscleSelection.macro = e.target.value; }));
+
+  // Specific checkboxes -> can select multiple
+  specInputs.forEach(cb => {
+    cb.addEventListener('change', () => {
+      if (cb.checked) muscleSelection.specifics.add(cb.value);
+      else muscleSelection.specifics.delete(cb.value);
+    });
+  });
+
+  // Initialize summary
+  summaryEl.textContent = getSelectedMuscleSummary();
+}
+
+initializeMuscleSelector();
 
 // ============================================================================
 // WORKOUT SAVING FUNCTIONS
@@ -256,7 +375,6 @@ function saveWorkoutToStorage(workout) {
     showError('Local storage is not available. Please check your browser settings.');
     return false;
   }
-  
   try {
     const savedWorkouts = getSavedWorkouts();
     savedWorkouts.push(workout);
@@ -365,12 +483,15 @@ function showNamePrompt(defaultName, callback) {
  * Fetches exercise data from JSON, filters by criteria, and displays results
  */
 async function getWorkout() {
-  // Get user-selected preferences from form controls
-  const length = document.getElementById('length').value;
-  const intensity = document.getElementById('intensity').value;
-  const muscle = document.getElementById('muscle').value;
+  // Get user-selected preferences from pill controls
+  const lengthEl = document.querySelector('#lengthPills .pill.selected');
+  const intensityEl = document.querySelector('#intensityPills .pill.selected');
+  const length = (lengthEl && lengthEl.dataset.value) ? lengthEl.dataset.value : 'Medium';
+  const intensity = (intensityEl && intensityEl.dataset.value) ? intensityEl.dataset.value : 'Medium';
+  const muscleChoice = getSelectedMuscle(); // could be macro string or Set of specifics
   const selectedMaterialsSet = getSelectedMaterials();
   const materialsSummary = getSelectedMaterialsSummary();
+  const muscleSummary = getSelectedMuscleSummary();
 
   // ------------------------------------------------------------------------
   // Load the local JSON dataset
@@ -399,6 +520,7 @@ async function getWorkout() {
       return {
         displayName,
         macroNormalized: normalizeText(item.macro_bodypart),
+        bodypartNormalized: normalizeText(item.bodypart || item.body_part || ''),
         equipmentLabel,
         intensityLabel: inferIntensityFromEquipment(item.equipment),
         gif: item.gif || '',
@@ -412,22 +534,22 @@ async function getWorkout() {
   }
 
   // ------------------------------------------------------------------------
-  // Filter by muscle group
+  // Filter by muscle group (supports macro or specific selections)
   // ------------------------------------------------------------------------
-  const targetMus = normalizeText(muscle);
-  let filtered = normalizedExercises.filter(ex => {
+  let filtered = [];
+  if (typeof muscleChoice === 'string') {
+    const targetMus = normalizeText(muscleChoice);
     if (targetMus === 'full') {
-      return ex.macroNormalized === 'full' || ex.macroNormalized === 'full body' || ex.macroNormalized === 'fullbody';
+      filtered = normalizedExercises;
+    } else {
+      filtered = normalizedExercises.filter(ex => ex.macroNormalized === targetMus);
     }
-    return ex.macroNormalized === targetMus;
-  });
-
-  // If dataset lacks explicit full-body tags, allow all exercises
-  if (targetMus === 'full' && filtered.length === 0) {
-    filtered = normalizedExercises;
+  } else if (muscleChoice instanceof Set) {
+    const specifics = new Set(Array.from(muscleChoice).map(s => normalizeText(s)));
+    filtered = normalizedExercises.filter(ex => specifics.has(ex.bodypartNormalized));
   }
 
-  if (filtered.length === 0) {
+  if (!filtered || filtered.length === 0) {
     document.getElementById('workoutResult').innerText = "No workouts found for that muscle group.";
     return;
   }
@@ -500,7 +622,7 @@ async function getWorkout() {
     settings: {
       length,
       intensity,
-      muscle,
+      muscle: muscleSummary,
       materials: materialsSummary
     },
     date: new Date().toISOString()
@@ -513,23 +635,40 @@ async function getWorkout() {
     if (r.intensityLabel) metaParts.push(`${r.intensityLabel} Intensity`);
     if (r.equipmentLabel) metaParts.push(`Equipment: ${r.equipmentLabel}`);
     const metaText = metaParts.length ? metaParts.join(' • ') : 'Details coming soon';
-    return `<div style="margin-bottom:12px"><strong>${sanitizeHTML(r.displayName)}</strong> <span style="color:#999;font-size:0.9rem">(${metaText})</span></div>`;
+    // Store extra metadata as encoded JSON in data attributes
+    const dataInstructions = encodeURIComponent(JSON.stringify(r.instructions || []));
+    const dataTarget = encodeURIComponent(r.macroNormalized || r.bodypartNormalized || '');
+    const dataGif = encodeURIComponent(r.gif || '');
+    const safeName = sanitizeHTML(r.displayName);
+    return `
+      <div class="exercise-row" style="margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">
+        <div style="text-align:left; max-width:80%;">
+          <strong>${safeName}</strong>
+          <div style="color:#999;font-size:0.9rem">(${metaText})</div>
+        </div>
+        <button class="exercise-info" aria-label="Show details for ${safeName}" title="Details"
+          data-name="${safeName}"
+          data-instructions="${dataInstructions}"
+          data-target="${dataTarget}"
+          data-gif="${dataGif}"
+          type="button">
+          <img src="https://img.icons8.com/?size=100&id=P7N90lIvNYPd&format=png&color=FD7E14" alt="info">
+        </button>
+      </div>`;
   }).join('');
   
   const isDup = isDuplicateWorkout(currentWorkoutData);
-  
+
   outEl.innerHTML = `
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-      <h2 style="margin: 0; font-size: 1.3rem;">Your Workout</h2>
-      <button id="saveWorkoutBtn" class="save-btn" title="${isDup ? 'This workout is already saved' : 'Save workout'}" ${isDup ? 'disabled' : ''}>
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
-          <polyline points="17 21 17 13 7 13 7 21"></polyline>
-          <polyline points="7 3 7 8 15 8"></polyline>
-        </svg>
-      </button>
+    <div class="result-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <h2>Your Workout</h2>
+        <button id="saveWorkoutBtn" class="save-btn" title="${isDup ? 'This workout is already saved' : 'Save workout'}" ${isDup ? 'disabled' : ''}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4h14l2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM12 19a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm5-11H7V6h10v2z" fill="currentColor"/></svg>
+        </button>
+      </div>
+      ${exercisesHtml}
     </div>
-    ${exercisesHtml}
   `;
 
   const saveBtn = document.getElementById('saveWorkoutBtn');
@@ -542,6 +681,92 @@ async function getWorkout() {
     saveBtn.addEventListener('click', saveButtonListener);
   }
 }
+
+// Delegate click for exercise info buttons to show a modal with details
+document.addEventListener('click', function (e) {
+  const infoBtn = e.target.closest && e.target.closest('.exercise-info');
+  if (!infoBtn) return;
+
+  // Remove existing modal if present
+  const existing = document.querySelector('.exercise-modal-overlay');
+  if (existing) existing.remove();
+
+  const name = infoBtn.getAttribute('data-name') || '';
+  const instructionsJson = decodeURIComponent(infoBtn.getAttribute('data-instructions') || '%5B%5D');
+  let instructions = [];
+  try { instructions = JSON.parse(instructionsJson); } catch (err) { instructions = []; }
+  const target = decodeURIComponent(infoBtn.getAttribute('data-target') || '');
+  const gif = decodeURIComponent(infoBtn.getAttribute('data-gif') || '');
+
+  // Build modal elements
+  const overlay = document.createElement('div');
+  overlay.className = 'exercise-modal-overlay';
+
+  const card = document.createElement('div');
+  card.className = 'exercise-card';
+  card.style.position = 'relative';
+
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'close-btn';
+  closeBtn.innerHTML = '&times;';
+  closeBtn.onclick = () => overlay.remove();
+
+  const title = document.createElement('h2');
+  title.innerHTML = sanitizeHTML(name);
+
+  const meta = document.createElement('div');
+  meta.className = 'meta';
+  meta.textContent = target ? `Target: ${target}` : '';
+
+  const instrDiv = document.createElement('div');
+  instrDiv.className = 'instructions';
+  if (Array.isArray(instructions) && instructions.length) {
+    const ol = document.createElement('ol');
+    instructions.forEach(step => {
+      const li = document.createElement('li');
+      li.innerHTML = sanitizeHTML((step || '').toString());
+      ol.appendChild(li);
+    });
+    instrDiv.appendChild(ol);
+  } else {
+    instrDiv.textContent = 'No instructions available.';
+  }
+
+  card.appendChild(closeBtn);
+  card.appendChild(title);
+  card.appendChild(meta);
+  card.appendChild(instrDiv);
+
+  if (gif) {
+    const img = document.createElement('img');
+    img.src = gif;
+    img.alt = name + ' demonstration';
+    card.appendChild(img);
+  }
+
+  overlay.appendChild(card);
+  // Add a fixed close button so the user can always close the modal even if
+  // the card content is taller than the viewport and scrolled.
+  const fixedClose = document.createElement('button');
+  fixedClose.className = 'exercise-modal-fixed-close';
+  fixedClose.innerHTML = '&times;';
+  fixedClose.onclick = () => overlay.remove();
+  document.body.appendChild(fixedClose);
+
+  overlay.addEventListener('click', (ev) => {
+    if (ev.target === overlay) overlay.remove();
+  });
+
+  document.body.appendChild(overlay);
+  // ensure fixed close button is removed when overlay is removed
+  const observer = new MutationObserver(() => {
+    if (!document.body.contains(overlay)) {
+      if (fixedClose && fixedClose.parentNode) fixedClose.remove();
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.body, { childList: true });
+});
 
 /**
  * Handles the save workout button click
