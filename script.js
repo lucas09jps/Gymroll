@@ -239,8 +239,8 @@ function initializeMuscleSelector() {
 
   if (!toggleBtn || !card || !summaryEl) return;
 
-  const openCard = () => { card.classList.add('open'); card.setAttribute('aria-hidden','false'); };
-  const closeCard = () => { card.classList.remove('open'); card.setAttribute('aria-hidden','true'); };
+  const openCard = () => { card.classList.add('open'); card.setAttribute('aria-hidden', 'false'); };
+  const closeCard = () => { card.classList.remove('open'); card.setAttribute('aria-hidden', 'true'); };
 
   // Gather control inputs (radios and specific checkboxes) safely
   const radios = Array.from(document.querySelectorAll('input[name="muscleMacro"]'));
@@ -301,6 +301,9 @@ function initializeMuscleSelector() {
     cb.addEventListener('change', () => {
       if (cb.checked) muscleSelection.specifics.add(cb.value);
       else muscleSelection.specifics.delete(cb.value);
+
+      // Update summary immediately for real-time feedback
+      summaryEl.textContent = getSelectedMuscleSummary();
     });
   });
 
@@ -309,6 +312,110 @@ function initializeMuscleSelector() {
 }
 
 initializeMuscleSelector();
+
+// ============================================================================
+// BODY DIAGRAM SVG INTERACTION (CodePen-inspired)
+// ============================================================================
+// Connect SVG muscle groups with checkboxes using the CodePen approach
+
+function initializeBodyDiagram() {
+  const svg = document.getElementById('bodyDiagramSVG');
+
+  if (!svg) return;
+
+  // Prevent double initialization
+  if (svg.hasAttribute('data-initialized')) return;
+  svg.setAttribute('data-initialized', 'true');
+
+  // SVG is now inline, so we can directly query it
+  const muscleGroups = svg.querySelectorAll("g[id]");
+
+  muscleGroups.forEach(function (group) {
+    // Skip the container groups
+    if (group.id === 'Back-Muscles' || group.id === 'Front-Muscles') return;
+
+    // For the hover effect
+    group.addEventListener('mouseover', function (el) {
+      const id = group.id.toLowerCase();
+      if (!id) return;
+
+      // Find the corresponding label
+      const label = document.querySelector("label[for=" + id + "]");
+      if (label) {
+        label.classList.add("hover");
+      }
+    });
+
+    group.addEventListener('mouseout', function (el) {
+      const id = group.id.toLowerCase();
+      if (!id) return;
+
+      // Find the corresponding label
+      const label = document.querySelector("label[for=" + id + "]");
+      if (label) {
+        label.classList.remove("hover");
+      }
+    });
+
+    // For the click - toggle checkbox
+    group.addEventListener('click', function (el) {
+      const id = group.id.toLowerCase();
+      if (!id) return;
+
+      // Find and toggle the checkbox
+      const input = document.getElementById(id);
+      if (input) {
+        input.checked = !input.checked;
+        // Trigger change event so the muscleSelection gets updated
+        input.dispatchEvent(new Event('change'));
+
+        // Update visual state of SVG
+        updateSVGMuscleState(group, input.checked);
+      }
+    });
+  });
+
+  // Initialize visual states for any already-checked checkboxes
+  const checkboxes = document.querySelectorAll('#muscleSpecificOptions input[type="checkbox"]');
+  checkboxes.forEach(function (checkbox) {
+    const muscleId = checkbox.id.charAt(0).toUpperCase() + checkbox.id.slice(1);
+    const muscleGroup = svg.querySelector(`#${muscleId}`);
+    if (muscleGroup && checkbox.checked) {
+      updateSVGMuscleState(muscleGroup, true);
+    }
+
+    // Add change listener to update SVG when checkbox is clicked directly
+    checkbox.addEventListener('change', function () {
+      if (muscleGroup) {
+        updateSVGMuscleState(muscleGroup, checkbox.checked);
+      }
+    });
+  });
+}
+
+// Helper function to update SVG muscle visual state
+function updateSVGMuscleState(svgGroup, isSelected) {
+  if (isSelected) {
+    svgGroup.classList.add('selected');
+  } else {
+    svgGroup.classList.remove('selected');
+  }
+}
+
+// Initialize on load and when switching modes
+document.addEventListener('DOMContentLoaded', () => {
+  // Initialize body diagram when muscle selector mode changes to specific
+  const modeSpecificBtn = document.getElementById('muscleModeSpecific');
+  if (modeSpecificBtn) {
+    modeSpecificBtn.addEventListener('click', () => {
+      // Small delay to ensure SVG is in DOM/visible
+      setTimeout(initializeBodyDiagram, 100);
+    });
+  }
+
+  // Try to initialize immediately in case it's already visible
+  setTimeout(initializeBodyDiagram, 500);
+});
 
 // ============================================================================
 // WORKOUT SAVING FUNCTIONS
@@ -325,7 +432,7 @@ function isDuplicateWorkout(workout) {
   const saved = getSavedWorkouts();
   // Create a signature by sorting exercise titles
   const workoutSignature = JSON.stringify(workout.exercises.map(e => e.title).sort());
-  
+
   // Check if any saved workout has the same signature
   return saved.some(savedWorkout => {
     const savedSignature = JSON.stringify(savedWorkout.exercises.map(e => e.title).sort());
@@ -402,33 +509,33 @@ function showNamePrompt(defaultName, callback) {
   const modal = document.createElement('div');
   modal.className = 'modal-overlay';
   modal.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 10000; display: flex; align-items: center; justify-content: center;';
-  
+
   // Create modal content box
   const modalContent = document.createElement('div');
   modalContent.style.cssText = 'background: var(--gray); padding: 30px; border-radius: 12px; max-width: 90%; width: 400px;';
-  
+
   // Modal title
   const title = document.createElement('h3');
   title.textContent = 'Save Workout';
   title.style.cssText = 'margin: 0 0 15px 0; color: var(--accent);';
-  
+
   // Input field for workout name
   const input = document.createElement('input');
   input.type = 'text';
   input.value = defaultName;
   input.style.cssText = 'width: 100%; padding: 12px; margin-bottom: 15px; background: var(--bg); color: var(--text); border: 2px solid var(--accent); border-radius: 8px; font-size: 1rem; box-sizing: border-box;';
   input.select();  // Select all text for easy editing
-  
+
   // Button container
   const buttonContainer = document.createElement('div');
   buttonContainer.style.cssText = 'display: flex; gap: 10px; justify-content: flex-end;';
-  
+
   // Cancel button
   const cancelBtn = document.createElement('button');
   cancelBtn.textContent = 'Cancel';
   cancelBtn.style.cssText = 'padding: 10px 20px; background: transparent; color: var(--text); border: 2px solid var(--gray); border-radius: 8px; cursor: pointer;';
   cancelBtn.onclick = () => modal.remove();  // Close modal on cancel
-  
+
   // Save button
   const saveBtn = document.createElement('button');
   saveBtn.textContent = 'Save';
@@ -438,13 +545,13 @@ function showNamePrompt(defaultName, callback) {
     modal.remove();
     callback(name);  // Call callback with entered name
   };
-  
+
   // Keyboard shortcuts: Enter to save, Escape to cancel
   input.onkeydown = (e) => {
     if (e.key === 'Enter') saveBtn.click();
     if (e.key === 'Escape') cancelBtn.click();
   };
-  
+
   // Assemble modal structure
   buttonContainer.appendChild(cancelBtn);
   buttonContainer.appendChild(saveBtn);
@@ -453,7 +560,7 @@ function showNamePrompt(defaultName, callback) {
   modalContent.appendChild(buttonContainer);
   modal.appendChild(modalContent);
   document.body.appendChild(modal);
-  
+
   input.focus();  // Focus input for immediate typing
 }
 
@@ -475,46 +582,79 @@ async function getWorkout() {
   const muscleSummary = getSelectedMuscleSummary();
 
   // ------------------------------------------------------------------------
+  // Show loading state
+  // ------------------------------------------------------------------------
+  const generateBtn = document.getElementById('generateBtn');
+  const workoutResultEl = document.getElementById('workoutResult');
+  const originalBtnContent = generateBtn.innerHTML;
+
+  // Disable button and show loading
+  generateBtn.disabled = true;
+  generateBtn.style.opacity = '0.6';
+  generateBtn.style.cursor = 'not-allowed';
+  generateBtn.innerHTML = '<span class="text">Generating...</span>';
+
+  // Show loading message
+  workoutResultEl.innerHTML = '<p style="color: var(--accent); font-size: 1rem;">🔄 Generating your workout...</p>';
+
+  // ------------------------------------------------------------------------
   // Load the local JSON dataset
   // ------------------------------------------------------------------------
   let dataset = [];
   try {
-    const resp = await fetch('exercises_cleaned.json');
+    const resp = await fetch('exercises_final.json');
     if (resp.ok) {
       dataset = await resp.json();
+    } else {
+      throw new Error(`Failed to load exercises: ${resp.status} ${resp.statusText}`);
     }
   } catch (e) {
-    // Fetch errors handled below
-  }
+    // Re-enable button
+    generateBtn.disabled = false;
+    generateBtn.style.opacity = '1';
+    generateBtn.style.cursor = 'pointer';
+    generateBtn.innerHTML = originalBtnContent;
 
-  if (!Array.isArray(dataset) || dataset.length === 0) {
-    document.getElementById('workoutResult').innerText = "Could not load exercises JSON (check path or format).";
+    workoutResultEl.innerHTML = `<p style="color: #ff4444;">❌ Could not load exercises. Please check your internet connection and try again.</p>`;
+    console.error('Error loading exercises:', e);
     return;
   }
 
+  if (!Array.isArray(dataset) || dataset.length === 0) {
+    // Re-enable button
+    generateBtn.disabled = false;
+    generateBtn.style.opacity = '1';
+    generateBtn.style.cursor = 'pointer';
+    generateBtn.innerHTML = originalBtnContent;
+
+    workoutResultEl.innerText = "Could not load exercises JSON (check path or format).";
+    return;
+  }
+
+
   // Normalize dataset for easier filtering
   const normalizedExercises = dataset
-    .filter(item => item && (item.name || item.exercise || item.title) && item.macro_bodypart)
+    .filter(item => item && item.name && item.macro_group)
     .map(item => {
-      const displayName = item.name || item.exercise || item.title || 'Exercise';
+      const displayName = item.name || 'Exercise';
       const equipmentLabel = (item.equipment || 'Body weight').toString().trim();
-      // Gather secondary muscles field if present in dataset (various possible keys)
-      let secondary = [];
-      if (Array.isArray(item.secondary_muscles)) secondary = item.secondary_muscles.slice();
-      else if (Array.isArray(item.secondary)) secondary = item.secondary.slice();
-      else if (item.secondary_muscles && typeof item.secondary_muscles === 'string') secondary = [item.secondary_muscles];
-      else if (item.secondary && typeof item.secondary === 'string') secondary = [item.secondary];
+
+      // Extract muscles array - this is now the primary muscle field
+      const muscles = Array.isArray(item.muscles) ? item.muscles : [];
+      const primaryMuscle = muscles.length > 0 ? muscles[0] : '';
+
       return {
         displayName,
-        macroNormalized: normalizeText(item.macro_bodypart),
-        bodypartNormalized: normalizeText(item.bodypart || item.body_part || ''),
+        macroNormalized: normalizeText(item.macro_group),
+        muscles: muscles.map(m => normalizeText(m)), // Array of normalized muscle names
+        primaryMuscleNormalized: normalizeText(primaryMuscle),
         equipmentLabel,
         intensityLabel: inferIntensityFromEquipment(item.equipment),
         gif: item.gif || '',
-        instructions: Array.isArray(item.instructions) ? item.instructions : [],
-        secondary
+        instructions: Array.isArray(item.instructions) ? item.instructions : []
       };
     });
+
 
   if (normalizedExercises.length === 0) {
     document.getElementById('workoutResult').innerText = "No exercises available in the dataset.";
@@ -533,14 +673,36 @@ async function getWorkout() {
       filtered = normalizedExercises.filter(ex => ex.macroNormalized === targetMus);
     }
   } else if (muscleChoice instanceof Set) {
+    // Validate that user selected at least one specific muscle
+    if (muscleChoice.size === 0) {
+      // Re-enable button
+      generateBtn.disabled = false;
+      generateBtn.style.opacity = '1';
+      generateBtn.style.cursor = 'pointer';
+      generateBtn.innerHTML = originalBtnContent;
+
+      workoutResultEl.innerHTML = '<p style="color: #ff4444;">⚠️ Please select at least one specific muscle group from the menu.</p>';
+      return;
+    }
+
     const specifics = new Set(Array.from(muscleChoice).map(s => normalizeText(s)));
-    filtered = normalizedExercises.filter(ex => specifics.has(ex.bodypartNormalized));
+    // Filter exercises where at least one muscle in the muscles array matches the selected specifics
+    filtered = normalizedExercises.filter(ex =>
+      ex.muscles.some(muscle => specifics.has(muscle))
+    );
   }
 
   if (!filtered || filtered.length === 0) {
-    document.getElementById('workoutResult').innerText = "No workouts found for that muscle group.";
+    // Re-enable button
+    generateBtn.disabled = false;
+    generateBtn.style.opacity = '1';
+    generateBtn.style.cursor = 'pointer';
+    generateBtn.innerHTML = originalBtnContent;
+
+    workoutResultEl.innerText = "No workouts found for that muscle group.";
     return;
   }
+
 
   // ------------------------------------------------------------------------
   // Filter by materials (equipment)
@@ -553,9 +715,16 @@ async function getWorkout() {
   });
 
   if (filtered.length === 0) {
-    document.getElementById('workoutResult').innerText = "No workouts available for the selected materials option.";
+    // Re-enable button
+    generateBtn.disabled = false;
+    generateBtn.style.opacity = '1';
+    generateBtn.style.cursor = 'pointer';
+    generateBtn.innerHTML = originalBtnContent;
+
+    workoutResultEl.innerText = "No workouts available for the selected materials option.";
     return;
   }
+
 
   // ------------------------------------------------------------------------
   // Group by inferred intensity
@@ -565,7 +734,7 @@ async function getWorkout() {
   const hard = filtered.filter(ex => ex.intensityLabel === 'Hard');
 
   // Determine number of exercises
-  const ranges = { 'Short': [1,2], 'Medium': [3,4], 'Long': [5,6] };
+  const ranges = { 'Short': [1, 2], 'Medium': [3, 4], 'Long': [5, 6] };
   const rng = ranges[length] || ranges['Medium'];
   const count = Math.floor(Math.random() * (rng[1] - rng[0] + 1)) + rng[0];
 
@@ -626,7 +795,7 @@ async function getWorkout() {
     const dataInstructions = encodeURIComponent(JSON.stringify(r.instructions || []));
     const dataTarget = encodeURIComponent(r.macroNormalized || r.bodypartNormalized || '');
     const dataGif = encodeURIComponent(r.gif || '');
-    const dataSecondary = encodeURIComponent(JSON.stringify(r.secondary || []));
+    const dataMuscles = encodeURIComponent(JSON.stringify(r.muscles || []));
     const safeName = sanitizeHTML(r.displayName);
     const infoSvg = `<svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm.75 15.5h-1.5V11h1.5v6.5zM12 8.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>`;
     return `
@@ -638,17 +807,18 @@ async function getWorkout() {
         <button class="exercise-info" aria-label="Show details for ${safeName}" title="Details"
           data-name="${safeName}"
           data-instructions="${dataInstructions}"
-          data-target="${dataTarget}"
+          data-target="${r.macroNormalized || ''}"
           data-gif="${dataGif}"
-          data-secondary="${dataSecondary}"
+          data-muscles="${dataMuscles}"
           type="button">
           ${infoSvg}
         </button>
       </div>`;
   }).join('');
-  
+
+
   const isDup = isDuplicateWorkout(currentWorkoutData);
-  
+
   outEl.innerHTML = `
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
       <h2 style="margin: 0; font-size: 1.3rem;">Your Workout</h2>
@@ -667,102 +837,18 @@ async function getWorkout() {
   if (saveButtonListener) {
     saveBtn.removeEventListener('click', saveButtonListener);
   }
-  
+
   if (!isDup) {
     saveButtonListener = handleSaveWorkout;
     saveBtn.addEventListener('click', saveButtonListener);
   }
 
-  // Delegate click for exercise info buttons to show a modal with details
-  document.addEventListener('click', function (e) {
-    const infoBtn = e.target.closest && e.target.closest('.exercise-info');
-    if (!infoBtn) return;
+  // Re-enable generate button after successful generation
+  generateBtn.disabled = false;
+  generateBtn.style.opacity = '1';
+  generateBtn.style.cursor = 'pointer';
+  generateBtn.innerHTML = originalBtnContent;
 
-    // Remove existing modal if present
-    const existing = document.querySelector('.exercise-modal-overlay');
-    if (existing) existing.remove();
-
-    const name = infoBtn.getAttribute('data-name') || '';
-    const instructionsJson = decodeURIComponent(infoBtn.getAttribute('data-instructions') || '%5B%5D');
-    let instructions = [];
-    try { instructions = JSON.parse(instructionsJson); } catch (err) { instructions = []; }
-    const target = decodeURIComponent(infoBtn.getAttribute('data-target') || '');
-    const gif = decodeURIComponent(infoBtn.getAttribute('data-gif') || '');
-    const secondaryJson = decodeURIComponent(infoBtn.getAttribute('data-secondary') || '%5B%5D');
-    let secondary = [];
-    try { secondary = JSON.parse(secondaryJson); } catch (err) { secondary = []; }
-
-    // Build modal elements
-    const overlay = document.createElement('div');
-    overlay.className = 'exercise-modal-overlay';
-
-    const card = document.createElement('div');
-    card.className = 'exercise-card';
-    card.style.position = 'relative';
-
-    const closeBtn = document.createElement('button');
-    closeBtn.className = 'close-btn';
-    closeBtn.innerHTML = '&times;';
-    closeBtn.onclick = () => overlay.remove();
-
-    const title = document.createElement('h2');
-    title.innerHTML = sanitizeHTML(name);
-
-    const meta = document.createElement('div');
-    meta.className = 'meta';
-    const metas = [];
-    if (target) metas.push(`Target: ${sanitizeHTML(target)}`);
-    if (secondary && secondary.length) metas.push(`Secondary: ${sanitizeHTML(secondary.join(', '))}`);
-    meta.textContent = metas.join(' • ');
-
-    const instrDiv = document.createElement('div');
-    instrDiv.className = 'instructions';
-    if (Array.isArray(instructions) && instructions.length) {
-      const ol = document.createElement('ol');
-      instructions.forEach(step => {
-        const li = document.createElement('li');
-        li.innerHTML = sanitizeHTML((step || '').toString());
-        ol.appendChild(li);
-      });
-      instrDiv.appendChild(ol);
-    } else {
-      instrDiv.textContent = 'No instructions available.';
-    }
-
-    card.appendChild(closeBtn);
-    card.appendChild(title);
-    card.appendChild(meta);
-    card.appendChild(instrDiv);
-
-    if (gif) {
-      const img = document.createElement('img');
-      img.src = gif;
-      img.alt = name + ' demonstration';
-      card.appendChild(img);
-    }
-
-    overlay.appendChild(card);
-    // Add a fixed close button so the user can always close the modal
-    const fixedClose = document.createElement('button');
-    fixedClose.className = 'exercise-modal-fixed-close';
-    fixedClose.innerHTML = '&times;';
-    fixedClose.onclick = () => overlay.remove();
-    document.body.appendChild(fixedClose);
-
-    overlay.addEventListener('click', (ev) => {
-      if (ev.target === overlay) overlay.remove();
-    });
-
-    document.body.appendChild(overlay);
-    // ensure fixed close button is removed when overlay is removed
-    const observer = new MutationObserver(() => {
-      if (!document.body.contains(overlay)) {
-        if (fixedClose && fixedClose.parentNode) fixedClose.remove();
-        observer.disconnect();
-      }
-    });
-    observer.observe(document.body, { childList: true });
-  });
 }
 
 /**
@@ -774,25 +860,25 @@ function handleSaveWorkout() {
 
   // Generate default workout name based on settings
   const defaultName = `${currentWorkoutData.settings.length} ${currentWorkoutData.settings.intensity} intensity for ${currentWorkoutData.settings.muscle} Groups`;
-  
+
   // Double-check for duplicates (in case user generated same workout again)
   if (isDuplicateWorkout(currentWorkoutData)) {
     showError('This workout is already saved!');
     return;
   }
-  
+
   // Show custom naming modal
   showNamePrompt(defaultName, (workoutName) => {
     // Get existing saved workouts
     const savedWorkouts = getSavedWorkouts();
-    
+
     // Create workout object with unique ID and sanitized name
     const workoutToSave = {
       id: Date.now().toString(),  // Use timestamp as unique ID
       name: sanitizeHTML(workoutName.trim() || defaultName),
       ...currentWorkoutData  // Spread all workout data
     };
-    
+
     // Save to localStorage
     if (saveWorkoutToStorage(workoutToSave)) {
       // Show success notification
@@ -802,7 +888,7 @@ function handleSaveWorkout() {
       successDiv.style.cssText = 'position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #4CAF50; color: white; padding: 15px 20px; border-radius: 8px; z-index: 10000; max-width: 90%;';
       document.body.appendChild(successDiv);
       setTimeout(() => successDiv.remove(), 3000);  // Auto-dismiss after 3 seconds
-      
+
       // Update save button to show it's been saved
       const saveBtn = document.getElementById('saveWorkoutBtn');
       saveBtn.style.opacity = '0.6';
@@ -824,7 +910,7 @@ function deleteWorkout(id) {
     showError('Local storage is not available.');
     return;
   }
-  
+
   try {
     const savedWorkouts = getSavedWorkouts();
     // Filter out the workout with matching ID
@@ -837,3 +923,117 @@ function deleteWorkout(id) {
     return false;
   }
 }
+
+// ============================================================================
+// GLOBAL EVENT LISTENER FOR EXERCISE INFO MODALS
+// ============================================================================
+// Delegate click for exercise info buttons to show a modal with details
+// This is registered once at page load to avoid memory leaks
+document.addEventListener('click', function (e) {
+  const infoBtn = e.target.closest && e.target.closest('.exercise-info');
+  if (!infoBtn) return;
+
+  // Remove existing modal if present
+  const existing = document.querySelector('.exercise-modal-overlay');
+  if (existing) existing.remove();
+
+  const name = infoBtn.getAttribute('data-name') || '';
+  const instructionsJson = decodeURIComponent(infoBtn.getAttribute('data-instructions') || '%5B%5D');
+  let instructions = [];
+  try { instructions = JSON.parse(instructionsJson); } catch (err) { instructions = []; }
+  const target = decodeURIComponent(infoBtn.getAttribute('data-target') || '');
+  const gif = decodeURIComponent(infoBtn.getAttribute('data-gif') || '');
+  const musclesJson = decodeURIComponent(infoBtn.getAttribute('data-muscles') || '%5B%5D');
+  let muscles = [];
+  try { muscles = JSON.parse(musclesJson); } catch (err) { muscles = []; }
+
+  // Build modal elements
+  const overlay = document.createElement('div');
+  overlay.className = 'exercise-modal-overlay';
+
+  const card = document.createElement('div');
+  card.className = 'exercise-card';
+  card.style.position = 'relative';
+
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'close-btn';
+  closeBtn.innerHTML = '&times;';
+  closeBtn.onclick = () => {
+    overlay.remove();
+    if (fixedClose && fixedClose.parentNode) fixedClose.remove();
+  };
+
+  const title = document.createElement('h2');
+  title.textContent = name; // Use textContent instead of innerHTML for better security
+
+  const meta = document.createElement('div');
+  meta.className = 'meta';
+  const metas = [];
+  if (target) metas.push(`Macro Group: ${sanitizeHTML(target)}`);
+  if (muscles && muscles.length) {
+    // Capitalize first letter of each muscle name for display
+    const muscleNames = muscles.map(m => m.charAt(0).toUpperCase() + m.slice(1));
+    metas.push(`Muscles: ${sanitizeHTML(muscleNames.join(', '))}`);
+  }
+  meta.textContent = metas.join(' • ');
+
+
+  const instrDiv = document.createElement('div');
+  instrDiv.className = 'instructions';
+  if (Array.isArray(instructions) && instructions.length) {
+    const ol = document.createElement('ol');
+    instructions.forEach(step => {
+      const li = document.createElement('li');
+      li.textContent = (step || '').toString(); // Use textContent for security
+      ol.appendChild(li);
+    });
+    instrDiv.appendChild(ol);
+  } else {
+    instrDiv.textContent = 'No instructions available.';
+  }
+
+  card.appendChild(closeBtn);
+  card.appendChild(title);
+  card.appendChild(meta);
+  card.appendChild(instrDiv);
+
+  if (gif) {
+    const img = document.createElement('img');
+    img.src = gif;
+    img.alt = name + ' demonstration';
+    card.appendChild(img);
+  }
+
+  overlay.appendChild(card);
+
+  // Add a fixed close button so the user can always close the modal
+  const fixedClose = document.createElement('button');
+  fixedClose.className = 'exercise-modal-fixed-close';
+  fixedClose.innerHTML = '&times;';
+  fixedClose.setAttribute('aria-label', 'Close exercise details');
+  fixedClose.onclick = () => {
+    overlay.remove();
+    fixedClose.remove();
+  };
+  document.body.appendChild(fixedClose);
+
+  // Close modal when clicking outside
+  overlay.addEventListener('click', (ev) => {
+    if (ev.target === overlay) {
+      overlay.remove();
+      if (fixedClose && fixedClose.parentNode) fixedClose.remove();
+    }
+  });
+
+  // Close modal with Escape key (accessibility improvement)
+  const handleEscape = (ev) => {
+    if (ev.key === 'Escape') {
+      overlay.remove();
+      if (fixedClose && fixedClose.parentNode) fixedClose.remove();
+      document.removeEventListener('keydown', handleEscape);
+    }
+  };
+  document.addEventListener('keydown', handleEscape);
+
+  document.body.appendChild(overlay);
+});

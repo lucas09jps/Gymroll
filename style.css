@@ -13,11 +13,16 @@
    Centralized color scheme for easy theming and consistency
    ============================================================================ */
 :root {
-  --bg: #0f0f0f;           /* Dark background color */
-  --text: #f5f5f5;          /* Light text color for contrast */
-  --accent: #ff5a00;        /* Primary accent color (orange) */
-  --accent-hover: #ff7733;  /* Lighter orange for hover states */
-  --gray: #2b2b2b;          /* Gray for cards and secondary elements */
+  --bg: #000000;
+  /* Dark background color */
+  --text: #f5f5f5;
+  /* Light text color for contrast */
+  --accent: #ff5a00;
+  /* Primary accent color (orange) */
+  --accent-hover: #ff7733;
+  /* Lighter orange for hover states */
+  --gray: #2b2b2b;
+  /* Gray for cards and secondary elements */
 }
 
 /* ============================================================================
@@ -26,37 +31,53 @@
 
 /* Universal selector - applies to all elements */
 * {
-  box-sizing: border-box;  /* Include padding and border in element width */
-  margin: 0;                /* Remove default margins */
-  padding: 0;              /* Remove default padding */
-  font-family: 'Montserrat', sans-serif;  /* Set default font */
+  box-sizing: border-box;
+  /* Include padding and border in element width */
+  margin: 0;
+  /* Remove default margins */
+  padding: 0;
+  /* Remove default padding */
+  font-family: 'Montserrat', sans-serif;
+  /* Set default font */
 }
 
 /* Body element - main page container */
 body {
-  background-color: var(--bg);  /* Use CSS variable for background */
-  color: var(--text);            /* Use CSS variable for text color */
-  text-align: center;            /* Center-align all content */
-  padding: 60px 20px;            /* Add padding for spacing */
+  background-color: var(--bg);
+  /* Use CSS variable for background */
+  color: var(--text);
+  /* Use CSS variable for text color */
+  text-align: center;
+  /* Center-align all content */
+  padding: 60px 20px;
+  /* Add padding for spacing */
 }
 
 /* ============================================================================
    TYPOGRAPHY
    ============================================================================ */
 
+
 /* Main page heading (h1) */
 h1 {
-  font-size: 3rem;         /* Large font size for prominence */
-  letter-spacing: 1px;      /* Slight letter spacing for readability */
-  font-weight: 700;        /* Bold weight */
-  margin-bottom: 10px;     /* Space below heading */
+  font-size: 3rem;
+  /* Large font size for prominence */
+  letter-spacing: 1px;
+  /* Slight letter spacing for readability */
+  font-weight: 700;
+  /* Bold weight */
+  margin-bottom: 10px;
+  /* Space below heading */
 }
 
 /* Paragraph/subtitle text */
 p {
-  color: #aaa;             /* Lighter gray for secondary text */
-  font-size: 1rem;         /* Standard font size */
-  margin-bottom: 40px;     /* Space below paragraph */
+  color: #aaa;
+  /* Lighter gray for secondary text */
+  font-size: 1rem;
+  /* Standard font size */
+  margin-bottom: 40px;
+  /* Space below paragraph */
 }
 
 /* ============================================================================
@@ -65,20 +86,30 @@ p {
 
 /* Select dropdown menus for workout filters */
 select {
-  background-color: var(--gray);  /* Dark gray background */
-  color: var(--text);             /* Light text color */
-  border: none;                   /* Remove default border */
-  padding: 12px 18px;            /* Internal spacing */
-  border-radius: 8px;            /* Rounded corners */
-  margin: 10px;                   /* Space around select */
-  font-size: 1rem;               /* Standard font size */
-  cursor: pointer;                /* Pointer cursor on hover */
-  transition: 0.2s;              /* Smooth transition for hover */
+  background-color: var(--gray);
+  /* Dark gray background */
+  color: var(--text);
+  /* Light text color */
+  border: none;
+  /* Remove default border */
+  padding: 12px 18px;
+  /* Internal spacing */
+  border-radius: 8px;
+  /* Rounded corners */
+  margin: 10px;
+  /* Space around select */
+  font-size: 1rem;
+  /* Standard font size */
+  cursor: pointer;
+  /* Pointer cursor on hover */
+  transition: 0.2s;
+  /* Smooth transition for hover */
 }
 
 /* Hover state for select dropdowns */
 select:hover {
-  background-color: #3a3a3a;  /* Lighter gray on hover */
+  background-color: #3a3a3a;
+  /* Lighter gray on hover */
 }
 
 /* ============================================================================
@@ -87,40 +118,59 @@ select:hover {
 
 /* Main Generate button */
 .btn {
-  background-color: var(--accent);  /* Orange accent color */
-  color: white;                      /* White text */
-  font-weight: 600;                 /* Semi-bold text */
-  border: none;                     /* No border */
-  border-radius: 10px;              /* Rounded corners */
-  padding: 14px 28px;               /* Internal spacing */
-  margin-top: 20px;                 /* Space above button */
-  font-size: 1rem;                  /* Standard font size */
-  letter-spacing: 0.5px;            /* Slight letter spacing */
-  cursor: pointer;                   /* Pointer cursor */
-  transition: all 450ms ease-in-out; /* Smooth transitions */
+  background-color: var(--accent);
+  /* Orange accent color */
+  color: white;
+  /* White text */
+  font-weight: 600;
+  /* Semi-bold text */
+  border: none;
+  /* No border */
+  border-radius: 10px;
+  /* Rounded corners */
+  padding: 14px 28px;
+  /* Internal spacing */
+  margin-top: 20px;
+  /* Space above button */
+  font-size: 1rem;
+  /* Standard font size */
+  letter-spacing: 0.5px;
+  /* Slight letter spacing */
+  cursor: pointer;
+  /* Pointer cursor */
+  transition: all 450ms ease-in-out;
+  /* Smooth transitions */
 }
 
 /* Sparkle/star icon inside button */
 .sparkle {
-  fill: #f7f6f6;           /* Light gray fill color */
-  transition: all 800ms ease; /* Smooth animation */
+  fill: #f7f6f6;
+  /* Light gray fill color */
+  transition: all 800ms ease;
+  /* Smooth animation */
 }
 
 /* Button text label */
 .text {
-  font-weight: 600;         /* Semi-bold */
-  color: #ffffff;         /* White color */
-  font-size: medium;      /* Medium font size */
+  font-weight: 600;
+  /* Semi-bold */
+  color: #ffffff;
+  /* White color */
+  font-size: medium;
+  /* Medium font size */
 }
 
 /* Hover effect for Generate button - animated gradient */
 .btn:hover {
-  background: linear-gradient(0deg,#A47CF3,#683FEA);  /* Purple gradient */
+  background: linear-gradient(0deg, #c4580b, #e99516);
+  /* Purple gradient */
   box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 0.4),
-  inset 0px -4px 0px 0px rgba(0, 0, 0, 0.2),
-  0px 0px 0px 4px rgba(255, 255, 255, 0.2),
-  0px 0px 180px 0px #9917FF;  /* Glowing shadow effect */
-  transform: translateY(-2px);  /* Slight lift on hover */
+    inset 0px -4px 0px 0px rgba(0, 0, 0, 0.2),
+    0px 0px 0px 4px rgba(255, 255, 255, 0.2),
+    0px 0px 180px 0px #e3900b;
+  /* Glowing shadow effect */
+  transform: translateY(-2px);
+  /* Slight lift on hover */
 }
 
 /* Text color on button hover */
@@ -130,9 +180,11 @@ select:hover {
 
 /* Sparkle icon animation on button hover */
 .btn:hover .sparkle {
-  fill: white;            /* White fill */
-  transform: scale(1.2);  /* Scale up 20% */
-} 
+  fill: white;
+  /* White fill */
+  transform: scale(1.2);
+  /* Scale up 20% */
+}
 
 /* ============================================================================
    MATERIALS CARD
@@ -171,10 +223,14 @@ select:hover {
   transform: translate(-50%, -50%) scale(0.98);
   width: 420px;
   max-width: 90vw;
+  max-height: 85vh;
+  /* Limit height to 85% of viewport */
+  overflow-y: auto;
+  /* Enable vertical scrolling */
   background-color: #1c1c1c;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
   padding: 20px;
   z-index: 1000;
   opacity: 0;
@@ -230,12 +286,23 @@ select:hover {
   display: flex;
   align-items: center;
   gap: 8px;
-  background-color: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 10px;
   padding: 8px 10px;
   font-size: 0.9rem;
   cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+
+.material-option:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.material-option:active {
+  transform: scale(0.98);
 }
 
 /* Exercise info button and modal styles */
@@ -243,8 +310,8 @@ select:hover {
   width: 40px;
   height: 40px;
   border-radius: 10px;
-  background: linear-gradient(135deg, rgba(255,90,0,0.10), rgba(255,90,0,0.06));
-  border: none;
+  background: linear-gradient(135deg, rgba(255, 90, 0, 0.1), rgba(255, 90, 0, 0.06));
+  border: 2px solid rgba(255, 255, 255, 0.08);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -252,13 +319,22 @@ select:hover {
   padding: 6px;
   color: var(--accent);
 }
-.exercise-info svg { width:18px; height:18px; display:block; color:var(--accent); }
-.exercise-info:hover { transform: translateY(-3px); }
+
+.exercise-info svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+  color: var(--accent);
+}
+
+.exercise-info:hover {
+  transform: translateY(-3px);
+}
 
 .exercise-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -266,23 +342,75 @@ select:hover {
   z-index: 2000;
   overflow-y: auto;
 }
+
 .exercise-card {
   background: var(--gray);
   padding: 20px;
   border-radius: 14px;
   width: 100%;
+  border: rgb(237, 7, 7);
   max-width: 640px;
   color: var(--text);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   max-height: calc(100vh - 100px);
   overflow-y: auto;
 }
-.exercise-card h2 { margin: 0 0 10px 0; color: var(--accent); }
-.exercise-card .meta { color: #ddd; font-size: 0.95rem; margin-bottom: 12px; }
-.exercise-card .instructions { color: #eee; margin-bottom: 14px; line-height: 1.5; text-align: left; }
-.exercise-card img { width: 100%; height: auto; max-height: 340px; object-fit: contain; border-radius: 8px; background: #fff; }
-.exercise-card .close-btn { background: transparent; border: none; color: var(--text); font-size: 1.4rem; position: absolute; right: 18px; top: 12px; cursor: pointer; }
-.exercise-modal-fixed-close { position: fixed; top: 16px; right: 16px; z-index: 2100; background: rgba(0,0,0,0.5); color: var(--text); border: none; width: 44px; height: 44px; border-radius: 10px; font-size: 20px; cursor: pointer; display:flex;align-items:center;justify-content:center }
+
+.exercise-card h2 {
+  margin: 0 0 10px 0;
+  color: var(--accent);
+}
+
+.exercise-card .meta {
+  color: #ddd;
+  font-size: 0.95rem;
+  margin-bottom: 12px;
+}
+
+.exercise-card .instructions {
+  color: #eee;
+  margin-bottom: 14px;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.exercise-card img {
+  width: 100%;
+  height: auto;
+  max-height: 340px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.exercise-card .close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 1.4rem;
+  position: absolute;
+  right: 18px;
+  top: 12px;
+  cursor: pointer;
+}
+
+.exercise-modal-fixed-close {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 2100;
+  background: rgba(0, 0, 0, 0.5);
+  color: var(--text);
+  border: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
 
 
 .material-option input {
@@ -305,27 +433,207 @@ select:hover {
   background-color: var(--accent-hover);
 }
 
+/* Custom scrollbar for materials/muscle cards */
+.materials-card::-webkit-scrollbar {
+  width: 8px;
+}
+
+.materials-card::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.materials-card::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 10px;
+}
+
+.materials-card::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-hover);
+}
+
+/* Smooth scrolling */
+.materials-card {
+  scroll-behavior: smooth;
+}
+
+/* ============================================================================
+   BODY DIAGRAM SVG STYLES (CodePen-inspired)
+   ============================================================================ */
+
+/* Container for the body diagram */
+.body-diagram-container {
+  background: rgba(255, 255, 255, 0.02);
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+}
+
+/* SVG positioning */
+#bodyDiagramSVG {
+  display: block;
+  margin: 0 auto;
+}
+
+/* Default state for SVG muscle groups - exclude container groups */
+#bodyDiagramSVG g[id]:not(#Back-Muscles):not(#Front-Muscles) path {
+  opacity: 0.3;
+  transition: opacity 0.25s ease-in-out, fill 0.25s ease-in-out, stroke 0.25s ease-in-out;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 1;
+}
+
+/* Make muscle groups clickable - exclude container groups */
+#bodyDiagramSVG g[id]:not(#Back-Muscles):not(#Front-Muscles) {
+  cursor: pointer;
+}
+
+/* Hover effect on SVG muscle groups - only on direct muscle groups */
+#bodyDiagramSVG g[id]:not(#Back-Muscles):not(#Front-Muscles):hover path {
+  opacity: 0.6;
+  fill: var(--accent) !important;
+  stroke: var(--accent) !important;
+  stroke-width: 2;
+}
+
+/* Selected state for SVG muscle groups (added via JavaScript) */
+#bodyDiagramSVG g.selected path {
+  opacity: 1 !important;
+  fill: var(--accent) !important;
+  stroke: var(--accent) !important;
+  stroke-width: 3 !important;
+}
+
+/* Hover effect on checkbox labels when SVG is hovered */
+.material-option.hover {
+  opacity: 1;
+  border-left: 5px solid var(--accent);
+  background-color: rgba(255, 90, 0, 0.15);
+  transform: translateX(5px);
+}
+
+/* Checked state - when checkbox is checked */
+.material-option input:checked~span {
+  font-weight: bold;
+  color: var(--accent);
+}
+
+/* Visual indicator for checked labels (using sibling selectors) */
+#pectorals:checked~.materials-grid label[for="pectorals"],
+#trapezius:checked~.materials-grid label[for="trapezius"],
+#lats:checked~.materials-grid label[for="lats"],
+#deltoids:checked~.materials-grid label[for="deltoids"],
+#biceps:checked~.materials-grid label[for="biceps"],
+#triceps:checked~.materials-grid label[for="triceps"],
+#forearms:checked~.materials-grid label[for="forearms"],
+#abs:checked~.materials-grid label[for="abs"],
+#obliques:checked~.materials-grid label[for="obliques"],
+#quads:checked~.materials-grid label[for="quads"],
+#hamstrings:checked~.materials-grid label[for="hamstrings"],
+#glutes:checked~.materials-grid label[for="glutes"],
+#calves:checked~.materials-grid label[for="calves"],
+#adductors:checked~.materials-grid label[for="adductors"],
+#cardio:checked~.materials-grid label[for="cardio"] {
+  background-color: rgba(255, 90, 0, 0.2);
+  border-color: var(--accent);
+  font-weight: bold;
+}
+
+#pectorals:checked~.materials-grid label[for="pectorals"] span,
+#trapezius:checked~.materials-grid label[for="trapezius"] span,
+#lats:checked~.materials-grid label[for="lats"] span,
+#deltoids:checked~.materials-grid label[for="deltoids"] span,
+#biceps:checked~.materials-grid label[for="biceps"] span,
+#triceps:checked~.materials-grid label[for="triceps"] span,
+#forearms:checked~.materials-grid label[for="forearms"] span,
+#abs:checked~.materials-grid label[for="abs"] span,
+#obliques:checked~.materials-grid label[for="obliques"] span,
+#quads:checked~.materials-grid label[for="quads"] span,
+#hamstrings:checked~.materials-grid label[for="hamstrings"] span,
+#glutes:checked~.materials-grid label[for="glutes"] span,
+#calves:checked~.materials-grid label[for="calves"] span,
+#adductors:checked~.materials-grid label[for="adductors"] span,
+#cardio:checked~.materials-grid label[for="cardio"] span {
+  color: var(--accent);
+}
+
+/* SVG highlight when checkbox is checked - fixed for inline SVG */
+.pectorals:checked~.body-diagram-container #bodyDiagramSVG #Pectorals path,
+.trapezius:checked~.body-diagram-container #bodyDiagramSVG #Trapezius path,
+.lats:checked~.body-diagram-container #bodyDiagramSVG #Lats path,
+.deltoids:checked~.body-diagram-container #bodyDiagramSVG #Deltoids path,
+.biceps:checked~.body-diagram-container #bodyDiagramSVG #Biceps path,
+.triceps:checked~.body-diagram-container #bodyDiagramSVG #Triceps path,
+.forearms:checked~.body-diagram-container #bodyDiagramSVG #Forearms path,
+.abs:checked~.body-diagram-container #bodyDiagramSVG #Abs path,
+.obliques:checked~.body-diagram-container #bodyDiagramSVG #Obliques path,
+.quads:checked~.body-diagram-container #bodyDiagramSVG #Quads path,
+.hamstrings:checked~.body-diagram-container #bodyDiagramSVG #Hamstrings path,
+.glutes:checked~.body-diagram-container #bodyDiagramSVG #Glutes path,
+.calves:checked~.body-diagram-container #bodyDiagramSVG #Calves path,
+.adductors:checked~.body-diagram-container #bodyDiagramSVG #Adductors path {
+  opacity: 1 !important;
+  fill: var(--accent) !important;
+  stroke: var(--accent) !important;
+  stroke-width: 3 !important;
+}
+
+/* Label hover effect on SVG */
+.material-option:hover~#bodyDiagramSVG svg g[id] path {
+  opacity: 0.75;
+}
+
+/* Smooth transition for all muscle interactions */
+.material-option {
+  transition: all 0.2s ease;
+  border-left: 5px solid transparent;
+  padding-left: 6px;
+  margin-left: -11px;
+  opacity: 0.6;
+}
+
+.material-option:hover {
+  opacity: 1;
+}
+
+/* Hide the helper checkboxes (they're only for CSS selectors) */
+.muscles-helper {
+  display: none;
+}
+
 /* ============================================================================
    WORKOUT RESULT DISPLAY
    ============================================================================ */
 
 /* Container for generated workout results */
 #workoutResult {
-  background-color: var(--gray);  /* Dark gray background */
-  border-radius: 12px;            /* Rounded corners */
-  padding: 25px;                  /* Internal spacing */
-  margin-top: 50px;               /* Space above container */
-  font-size: 1.2rem;               /* Larger font for readability */
-  line-height: 1.6;                /* Comfortable line spacing */
-  display: inline-block;          /* Shrink to content width */
-  width: 80%;                     /* 80% of parent width */
-  max-width: 500px;               /* Maximum width constraint */
+  background-color: var(--gray);
+  /* Dark gray background */
+  border-radius: 12px;
+  /* Rounded corners */
+  padding: 25px;
+  /* Internal spacing */
+  margin-top: 50px;
+  /* Space above container */
+  font-size: 1.2rem;
+  /* Larger font for readability */
+  line-height: 1.6;
+  /* Comfortable line spacing */
+  display: inline-block;
+  /* Shrink to content width */
+  width: 80%;
+  /* 80% of parent width */
+  max-width: 500px;
+  /* Maximum width constraint */
 }
 
 /* Strong/bold text for exercise names */
 strong {
-  color: var(--accent);  /* Orange accent color */
-  font-weight: 700;     /* Bold weight */
+  color: var(--accent);
+  /* Orange accent color */
+  font-weight: 700;
+  /* Bold weight */
 }
 
 /* ============================================================================
@@ -333,18 +641,24 @@ strong {
    ============================================================================ */
 
 footer {
-  margin-top: 60px;      /* Space above footer */
-  font-size: 0.9rem;     /* Smaller font */
-  color: #666;          /* Gray text */
+  margin-top: 60px;
+  /* Space above footer */
+  font-size: 0.9rem;
+  /* Smaller font */
+  color: #666;
+  /* Gray text */
 }
 
 footer a {
-  color: var(--accent);  /* Orange links */
-  text-decoration: none; /* No underline */
+  color: var(--accent);
+  /* Orange links */
+  text-decoration: none;
+  /* No underline */
 }
 
 footer a:hover {
-  text-decoration: underline; /* Underline on hover */
+  text-decoration: underline;
+  /* Underline on hover */
 }
 
 /* ============================================================================
@@ -353,6 +667,7 @@ footer a:hover {
    Media queries for tablets and smaller screens (max-width: 768px)
    ============================================================================ */
 @media screen and (max-width: 768px) {
+
   /* Reduce body padding on mobile */
   body {
     padding: 30px 15px;
@@ -371,26 +686,36 @@ footer a:hover {
   }
 
   /* Stack form labels vertically on mobile */
-  div > label {
-    display: block;        /* Block display for stacking */
-    margin-bottom: 8px;    /* Space below label */
-    margin-top: 15px;      /* Space above label */
-    font-size: 0.95rem;    /* Slightly smaller font */
+  div>label {
+    display: block;
+    /* Block display for stacking */
+    margin-bottom: 8px;
+    /* Space below label */
+    margin-top: 15px;
+    /* Space above label */
+    font-size: 0.95rem;
+    /* Slightly smaller font */
   }
 
   /* Remove top margin from first label */
-  div > label:first-child {
+  div>label:first-child {
     margin-top: 0;
   }
 
   /* Full-width select dropdowns on mobile */
   select {
-    display: block;         /* Block display */
-    width: 100%;          /* Full width */
-    max-width: 100%;      /* No max width constraint */
-    margin: 0 0 15px 0;   /* Margin only below */
-    padding: 14px 18px;   /* Slightly more padding for touch */
-    font-size: 1rem;      /* Standard font size */
+    display: block;
+    /* Block display */
+    width: 100%;
+    /* Full width */
+    max-width: 100%;
+    /* No max width constraint */
+    margin: 0 0 15px 0;
+    /* Margin only below */
+    padding: 14px 18px;
+    /* Slightly more padding for touch */
+    font-size: 1rem;
+    /* Standard font size */
   }
 
   /* Expand materials selector on mobile */
@@ -412,20 +737,30 @@ footer a:hover {
 
   /* Full-width button on mobile */
   .btn {
-    width: 100%;          /* Full width */
-    max-width: 100%;     /* No max width */
-    padding: 16px 28px;  /* More padding for touch */
-    font-size: 1rem;     /* Standard font */
-    margin-top: 20px;    /* Space above */
+    width: 100%;
+    /* Full width */
+    max-width: 100%;
+    /* No max width */
+    padding: 16px 28px;
+    /* More padding for touch */
+    font-size: 1rem;
+    /* Standard font */
+    margin-top: 20px;
+    /* Space above */
   }
 
   /* Full-width workout result on mobile */
   #workoutResult {
-    width: 100%;         /* Full width */
-    max-width: 100%;     /* No max width */
-    padding: 20px;       /* Slightly less padding */
-    margin-top: 30px;    /* Less top margin */
-    font-size: 1rem;     /* Standard font size */
+    width: 100%;
+    /* Full width */
+    max-width: 100%;
+    /* No max width */
+    padding: 20px;
+    /* Slightly less padding */
+    margin-top: 30px;
+    /* Less top margin */
+    font-size: 1rem;
+    /* Standard font size */
   }
 }
 
@@ -435,6 +770,7 @@ footer a:hover {
    Additional styles for very small screens (max-width: 480px)
    ============================================================================ */
 @media screen and (max-width: 480px) {
+
   /* Even less padding on small screens */
   body {
     padding: 20px 10px;
@@ -484,49 +820,76 @@ footer a:hover {
 
 /* Navigation link to saved workouts page (top right) */
 .saved-link {
-  position: absolute;      /* Absolute positioning */
-  top: 20px;              /* 20px from top */
-  right: 20px;            /* 20px from right */
-  color: var(--accent);    /* Orange color */
-  text-decoration: none;   /* No underline */
-  font-weight: 600;       /* Semi-bold */
-  font-size: 1rem;        /* Standard font size */
-  padding: 8px 16px;      /* Internal spacing */
-  border-radius: 8px;     /* Rounded corners */
-  transition: all 0.2s;    /* Smooth transitions */
-  z-index: 100;           /* Above other content */
+  position: absolute;
+  /* Absolute positioning */
+  top: 20px;
+  /* 20px from top */
+  right: 20px;
+  /* 20px from right */
+  color: var(--accent);
+  /* Orange color */
+  text-decoration: none;
+  /* No underline */
+  font-weight: 600;
+  /* Semi-bold */
+  font-size: 1rem;
+  /* Standard font size */
+  padding: 8px 16px;
+  /* Internal spacing */
+  border-radius: 8px;
+  /* Rounded corners */
+  transition: all 0.2s;
+  /* Smooth transitions */
+  z-index: 100;
+  /* Above other content */
 }
 
 /* Hover effect for saved link */
 .saved-link:hover {
-  background-color: var(--gray);  /* Gray background */
-  color: var(--accent-hover);     /* Lighter orange */
+  background-color: var(--gray);
+  /* Gray background */
+  color: var(--accent-hover);
+  /* Lighter orange */
 }
 
 /* Save workout button (flag icon) */
 .save-btn {
-  background: transparent;        /* Transparent background */
-  border: 2px solid var(--accent); /* Orange border */
-  color: var(--accent);            /* Orange color */
-  padding: 8px 12px;              /* Internal spacing */
-  border-radius: 8px;              /* Rounded corners */
-  cursor: pointer;                 /* Pointer cursor */
-  transition: all 0.2s;            /* Smooth transitions */
-  display: flex;                    /* Flexbox for centering */
-  align-items: center;             /* Vertical centering */
-  justify-content: center;         /* Horizontal centering */
+  background: transparent;
+  /* Transparent background */
+  border: 2px solid var(--accent);
+  /* Orange border */
+  color: var(--accent);
+  /* Orange color */
+  padding: 8px 12px;
+  /* Internal spacing */
+  border-radius: 8px;
+  /* Rounded corners */
+  cursor: pointer;
+  /* Pointer cursor */
+  transition: all 0.2s;
+  /* Smooth transitions */
+  display: flex;
+  /* Flexbox for centering */
+  align-items: center;
+  /* Vertical centering */
+  justify-content: center;
+  /* Horizontal centering */
 }
 
 /* Hover effect for save button (when not disabled) */
 .save-btn:hover:not(:disabled) {
-  background-color: var(--accent); /* Orange background */
-  color: white;                    /* White icon */
+  background-color: var(--accent);
+  /* Orange background */
+  color: white;
+  /* White icon */
 }
 
 /* Disabled state for save button */
 .save-btn:disabled {
-  opacity: 0.6;        /* Reduced opacity */
-  cursor: not-allowed; /* Not-allowed cursor */
+  opacity: 0.6;
+  /* Reduced opacity */
+  cursor: not-allowed;
+  /* Not-allowed cursor */
 }
 
 /* ============================================================================
@@ -535,70 +898,106 @@ footer a:hover {
 
 /* Container for saved workouts list */
 #savedWorkoutsList {
-  max-width: 800px;    /* Maximum width for readability */
-  margin: 0 auto;      /* Center horizontally */
-  padding: 20px;       /* Internal spacing */
+  max-width: 800px;
+  /* Maximum width for readability */
+  margin: 0 auto;
+  /* Center horizontally */
+  padding: 20px;
+  /* Internal spacing */
 }
 
 /* Individual workout card */
 .saved-workout-card {
-  background-color: var(--gray);  /* Dark gray background */
-  border-radius: 12px;            /* Rounded corners */
-  padding: 25px;                  /* Internal spacing */
-  margin-bottom: 25px;            /* Space between cards */
-  text-align: left;               /* Left-align text */
+  background-color: var(--gray);
+  /* Dark gray background */
+  border-radius: 12px;
+  /* Rounded corners */
+  padding: 25px;
+  /* Internal spacing */
+  margin-bottom: 25px;
+  /* Space between cards */
+  text-align: left;
+  /* Left-align text */
 }
 
 /* Header section of workout card (title and delete button) */
 .workout-header {
-  display: flex;                   /* Flexbox layout */
-  justify-content: space-between;  /* Space between title and button */
-  align-items: center;             /* Vertical centering */
-  margin-bottom: 15px;             /* Space below header */
+  display: flex;
+  /* Flexbox layout */
+  justify-content: space-between;
+  /* Space between title and button */
+  align-items: center;
+  /* Vertical centering */
+  margin-bottom: 15px;
+  /* Space below header */
 }
 
 /* Workout title in card */
 .workout-header h2 {
-  margin: 0;                       /* No margin */
-  font-size: 1.5rem;               /* Large font */
-  color: var(--accent);            /* Orange color */
+  margin: 0;
+  /* No margin */
+  font-size: 1.5rem;
+  /* Large font */
+  color: var(--accent);
+  /* Orange color */
 }
 
 /* Delete button in workout card */
 .delete-btn {
-  background: transparent;         /* Transparent background */
-  border: none;                    /* No border */
-  font-size: 1.2rem;              /* Large emoji size */
-  cursor: pointer;                 /* Pointer cursor */
-  padding: 5px 10px;              /* Internal spacing */
-  border-radius: 6px;             /* Rounded corners */
-  transition: all 0.2s;            /* Smooth transitions */
+  background: transparent;
+  /* Transparent background */
+  border: none;
+  /* No border */
+  font-size: 1.2rem;
+  /* Large emoji size */
+  cursor: pointer;
+  /* Pointer cursor */
+  padding: 5px 10px;
+  /* Internal spacing */
+  border-radius: 6px;
+  /* Rounded corners */
+  transition: all 0.2s;
+  /* Smooth transitions */
 }
 
 /* Hover effect for delete button */
 .delete-btn:hover {
-  background-color: rgba(255, 255, 255, 0.1); /* Light background */
-  transform: scale(1.1);           /* Slight scale up */
+  background-color: rgba(255, 255, 255, 0.1);
+  /* Light background */
+  transform: scale(1.1);
+  /* Slight scale up */
 }
 
 /* Metadata section (settings and date) */
 .workout-meta {
-  display: flex;                   /* Flexbox layout */
-  justify-content: space-between;   /* Space between items */
-  align-items: center;             /* Vertical centering */
-  margin-bottom: 20px;               /* Space below */
-  padding-bottom: 15px;            /* Padding below */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle divider */
-  font-size: 0.95rem;              /* Slightly smaller font */
-  color: #aaa;                     /* Gray text */
-  flex-wrap: wrap;                 /* Wrap on small screens */
-  gap: 10px;                       /* Space between items */
+  display: flex;
+  /* Flexbox layout */
+  justify-content: space-between;
+  /* Space between items */
+  align-items: center;
+  /* Vertical centering */
+  margin-bottom: 20px;
+  /* Space below */
+  padding-bottom: 15px;
+  /* Padding below */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  /* Subtle divider */
+  font-size: 0.95rem;
+  /* Slightly smaller font */
+  color: #aaa;
+  /* Gray text */
+  flex-wrap: wrap;
+  /* Wrap on small screens */
+  gap: 10px;
+  /* Space between items */
 }
 
 /* Exercise list in workout card */
 .workout-exercises {
-  font-size: 1.1rem;    /* Slightly larger font */
-  line-height: 1.6;     /* Comfortable line spacing */
+  font-size: 1.1rem;
+  /* Slightly larger font */
+  line-height: 1.6;
+  /* Comfortable line spacing */
 }
 
 /* ============================================================================
@@ -607,13 +1006,22 @@ footer a:hover {
 
 /* Modal overlay (dark background) */
 .modal-overlay {
-  animation: fadeIn 0.2s ease-in; /* Fade-in animation */
+  animation: fadeIn 0.2s ease-in;
+  /* Fade-in animation */
 }
 
 /* Fade-in animation keyframes */
 @keyframes fadeIn {
-  from { opacity: 0; }  /* Start invisible */
-  to { opacity: 1; }    /* End fully visible */
+  from {
+    opacity: 0;
+  }
+
+  /* Start invisible */
+  to {
+    opacity: 1;
+  }
+
+  /* End fully visible */
 }
 
 /* ============================================================================
@@ -622,7 +1030,8 @@ footer a:hover {
 
 /* Hover effect for clear all button */
 .clear-all-btn:hover {
-  background: #cc0000 !important; /* Darker red on hover */
+  background: #cc0000 !important;
+  /* Darker red on hover */
 }
 
 /* ============================================================================
@@ -630,19 +1039,26 @@ footer a:hover {
    ============================================================================ */
 
 /* Error and success message animations */
-.error-message, .success-message {
-  animation: slideDown 0.3s ease-out; /* Slide-down animation */
+.error-message,
+.success-message {
+  animation: slideDown 0.3s ease-out;
+  /* Slide-down animation */
 }
 
 /* Slide-down animation keyframes */
 @keyframes slideDown {
   from {
-    transform: translateX(-50%) translateY(-20px); /* Start above and centered */
-    opacity: 0;                                    /* Start invisible */
+    transform: translateX(-50%) translateY(-20px);
+    /* Start above and centered */
+    opacity: 0;
+    /* Start invisible */
   }
+
   to {
-    transform: translateX(-50%) translateY(0);    /* End in position */
-    opacity: 1;                                    /* End visible */
+    transform: translateX(-50%) translateY(0);
+    /* End in position */
+    opacity: 1;
+    /* End visible */
   }
 }
 
@@ -652,28 +1068,39 @@ footer a:hover {
    Responsive styles for saved workouts page on mobile
    ============================================================================ */
 @media screen and (max-width: 768px) {
+
   /* Make saved link relative on mobile (not absolute) */
   .saved-link {
-    position: relative;    /* Relative positioning */
-    top: 0;              /* No top offset */
-    right: 0;            /* No right offset */
-    display: inline-block; /* Inline block */
-    margin-bottom: 20px;  /* Space below */
+    position: relative;
+    /* Relative positioning */
+    top: 0;
+    /* No top offset */
+    right: 0;
+    /* No right offset */
+    display: inline-block;
+    /* Inline block */
+    margin-bottom: 20px;
+    /* Space below */
   }
-  
+
   /* Stack workout header vertically on mobile */
   .workout-header {
-    flex-direction: column;  /* Vertical stacking */
-    align-items: flex-start; /* Left alignment */
-    gap: 10px;               /* Space between items */
+    flex-direction: column;
+    /* Vertical stacking */
+    align-items: flex-start;
+    /* Left alignment */
+    gap: 10px;
+    /* Space between items */
   }
-  
+
   /* Stack metadata vertically on mobile */
   .workout-meta {
-    flex-direction: column;   /* Vertical stacking */
-    align-items: flex-start;  /* Left alignment */
+    flex-direction: column;
+    /* Vertical stacking */
+    align-items: flex-start;
+    /* Left alignment */
   }
-  
+
   /* Less padding on cards for mobile */
   .saved-workout-card {
     padding: 20px;
