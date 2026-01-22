@@ -235,7 +235,7 @@ select:hover {
   z-index: 1000;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.18s ease, transform 0.18s ease;
+  transition: opacity 0.17s ease, transform 0.18s ease;
 }
 
 .materials-card.open {
